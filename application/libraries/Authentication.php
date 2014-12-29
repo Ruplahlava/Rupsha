@@ -10,6 +10,7 @@ class Authentication
     public function __construct()
     {
         $this->ci = & get_instance();
+        
     }
 
     /**
@@ -19,6 +20,16 @@ class Authentication
     public function is_logged()
     {
         return false;
+    }
+    
+    
+    /**
+     * _check_admin_page
+     */
+    public function _check_admin_page() {
+        if (in_array($this->ci->router->class, $this->admin_classes) && !$this->session->userdata('is_logged')) {
+            redirect(base_url() . "admin/login");
+        }
     }
 
 }

@@ -58,35 +58,6 @@ class Uploader extends CI_Controller {
     }
 
     /**
-     * login
-     */
-    public function login() {
-        if ($this->input->post()) {
-            if (TRUE === $this->_validate_login() && $this->foto->logged($this->input->post('login'), $this->input->post('password'))) {
-                $userdata = array(
-                    'is_logged' => true,
-                    'login' => $this->input->post('login')
-                );
-                $this->session->set_userdata($userdata);
-                redirect(base_url() . 'admin');
-            } else {
-                $this->session->set_flashdata('invalid_credentials', TRUE);
-                $this->load->view(self::MAIN_VIEW, $this->data);
-            }
-        } else {
-            $this->load->view(self::MAIN_VIEW, $this->data);
-        }
-    }
-
-    /**
-     * logout
-     */
-    public function logout() {
-        $this->session->sess_destroy();
-        redirect(base_url() . "admin/uploader/login");
-    }
-
-    /**
      * _upload_picture
      * @return array
      */
@@ -147,15 +118,6 @@ class Uploader extends CI_Controller {
     }
 
     /**
-     * _check_admin_page
-     */
-    public function _check_admin_page() {
-        if (in_array($this->router->method, $this->admin_methods) && !$this->session->userdata('is_logged')) {
-            redirect(base_url() . "admin/uploader/login");
-        }
-    }
-
-    /**
      * _validate_album
      * @return boolean
      */
@@ -174,23 +136,4 @@ class Uploader extends CI_Controller {
             return TRUE;
         }
     }
-
-    /**
-     * _validate_login()
-     * @return boolean
-     */
-    public function _validate_login() {
-        $this->load->helper('form');
-        $this->load->library('form_validation');
-
-        $this->form_validation->set_rules('login', 'Username', 'required|encode_php_tags|htmlspecialchars');
-        $this->form_validation->set_rules('password', 'Password', 'required|encode_php_tags|htmlspecialchars');
-
-        if ($this->form_validation->run() == FALSE) {
-            return FALSE;
-        } else {
-            return TRUE;
-        }
-    }
-
 }
