@@ -24,7 +24,6 @@ class Uploader extends CI_Controller {
             "index",
             "upload"
         );
-        $this->_check_admin_page();
     }
 
     /**

@@ -6,11 +6,14 @@ class Authentication
 {
 //  Instance of CI;
     protected $ci;
+    
+    protected $admin_classes = array();
 
     public function __construct()
     {
         $this->ci = & get_instance();
-        
+        $this->admin_classes[] = 'uploader';
+        $this->_check_admin_page();
     }
 
     /**
@@ -27,7 +30,7 @@ class Authentication
      * _check_admin_page
      */
     public function _check_admin_page() {
-        if (in_array($this->ci->router->class, $this->admin_classes) && !$this->session->userdata('is_logged')) {
+        if (in_array($this->ci->router->class, $this->admin_classes) && !$this->ci->session->userdata('is_logged')) {
             redirect(base_url() . "admin/login");
         }
     }
