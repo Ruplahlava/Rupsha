@@ -37,10 +37,6 @@ class Uploader extends CI_Controller {
      * upload
      */
     public function upload() {
-        
-        $this->load->model('user');
-        print_r( $this->user->get_id($this->session->userdata('login')));
-        
         // Pridani alba       
         if ($this->input->post() && $this->_validate_album($this->input->post())) {
             $this->foto->add_album($this->input->post());
