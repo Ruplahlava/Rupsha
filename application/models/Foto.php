@@ -10,7 +10,7 @@ class Foto extends CI_Model {
      * @param int/boolean $album
      * @return boolean
      */
-    public function get_album($album = FALSE) {
+    public function get_album($id_user,$album = FALSE) {
         if (FALSE === $album && empty($album)) {
             $sql = 'SELECT * 
                     FROM album
@@ -19,10 +19,11 @@ class Foto extends CI_Model {
                     SELECT COUNT( * ) AS cnt, id_album
                     FROM foto
                     GROUP BY id_album
-                    )ft ON album.id = ft.id_album';
+                    )ft ON album.id = ft.id_album
+                    WHERE id_user ='.$id_user;
             $album_content = $this->db->query($sql);
         } else {
-            $album_content = $this->db->get_where('album', array('id' => $album));
+            $album_content = $this->db->get_where('album', array('id' => $album,'id_user'=>$id_user));
         }
         if ($album_content->num_rows() !== 0) {
             return $album_content->result();

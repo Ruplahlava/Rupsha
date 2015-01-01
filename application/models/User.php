@@ -24,4 +24,18 @@ class User extends CI_Model {
         return $user;
     }
 
+    /**
+     * 
+     * @param string $login
+     * @return integer
+     */
+    public function get_id($login) {
+        $query = $this->db->get_where('users', array('login' => $login));
+        if ($query->num_rows !== 0) {
+            $result = $query->result();
+            return $result[0]->id;
+        }
+        return false;
+    }
+
 }
