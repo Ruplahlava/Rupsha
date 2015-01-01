@@ -20,12 +20,16 @@ class Authentication
      * is_logged
      * @return boolean 
      */
-    public function is_logged()
+    public function is_logged($login, $password) 
     {
+        $this->ci->load->model('user');
+        $user = $this->ci->user->get_user_login($login, $password);
+        if ($user->num_rows() !== 0) {
+            return TRUE;
+        }
         return false;
     }
-    
-    
+
     /**
      * _check_admin_page
      */

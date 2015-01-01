@@ -19,6 +19,9 @@
         </style>
         <link rel="stylesheet" href="<?= base_url() ?>css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="<?= base_url() ?>css/main.css">
+        <?php if (isset($login_css)): ?>
+            <link rel="stylesheet" href="<?= base_url() ?>css/login.css">
+        <?php endif; ?>
         <script src="<?= base_url() ?>js/dropzone.min.js"></script>
 
         <script src="<?= base_url() ?>js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>

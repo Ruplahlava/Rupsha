@@ -14,7 +14,7 @@
                 <a class="navbar-brand" href="<?= base_url() ?>admin">Fotoshare</a>
             </div>
             <?php if (TRUE === $this->session->userdata("is_logged")): ?>
-            <form action="<?=  base_url() ?>admin/uploader/logout" class="navbar-right" method="get">
+            <form action="<?=  base_url() ?>admin/login/logout" class="navbar-right" method="get">
                         <button type="submit" class="btn btn-success navbar-btn">Log out</button>
             </form>
             <?php else: ?>

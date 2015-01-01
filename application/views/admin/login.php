@@ -19,13 +19,13 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <form accept-charset="UTF-8" role="form" class="form-signin">
+                        <form accept-charset="UTF-8" role="form" class="form-signin" method="post" action="<?= current_url() ?>">
                             <fieldset>
                                 <label class="panel-login">
                                     <div class="login_result"></div>
                                 </label>
-                                <input class="form-control" placeholder="Username" id="username" type="text">
-                                <input class="form-control" placeholder="Password" id="password" type="password">
+                                <input class="form-control" placeholder="Username" id="username" type="text" name="login">
+                                <input class="form-control" placeholder="Password" id="password" type="password" name="password">
                                 <br></br>
                                 <input class="btn btn-lg btn-success btn-block" type="submit" id="login" value="Login »">
                             </fieldset>

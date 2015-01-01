@@ -1,25 +1,8 @@
 <?php
-
+/**
+ * Desc
+ */
 class Foto extends CI_Model {
-
-    /**
-     * logged
-     * 
-     * @param string $login
-     * @param string $password
-     * @return boolean
-     */
-    public function logged($login, $password) {
-        $credentials = array(
-            'login' => $login,
-            'password' => sha1($password)
-        );
-        $user = $this->db->get_where('users', $credentials);
-        if ($user->num_rows() !== 0) {
-            return TRUE;
-        }
-        return FALSE;
-    }
 
     /**
      * get_album provides single album if id is specified, all if it is not
