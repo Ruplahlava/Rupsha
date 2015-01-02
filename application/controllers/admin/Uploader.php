@@ -52,7 +52,9 @@ class Uploader extends CI_Controller {
             if ('upload' === $this->uri->segment(5)) {
                 $this->_process_picture();
             } else {
-                // Zobrazeni uploaderu               
+                // Zobrazeni uploaderu     
+                $this->data['id_album'] = $this->uri->segment(4);
+                $this->data['user'] = $this->session->userdata('login');
                 $this->data['album'] = $this->foto->get_album($this->session->userdata('id_user'),$this->uri->segment(4));
                 $this->load->view(self::UPLOADER_VIEW, $this->data);
             }

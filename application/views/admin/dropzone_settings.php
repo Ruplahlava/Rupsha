@@ -1,58 +1,69 @@
 <style type="text/css">
     #actions {
-      margin: 2em 0;
+        margin: 2em 0;
     }
 
 
     /* Mimic table appearance */
     div.table {
-      display: table;
+        display: table;
     }
     div.table .file-row {
-      display: table-row;
+        display: table-row;
     }
     div.table .file-row > div {
-      display: table-cell;
-      vertical-align: top;
-      border-top: 1px solid #ddd;
-      padding: 8px;
+        display: table-cell;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+        padding: 8px;
     }
     div.table .file-row:nth-child(odd) {
-      background: #f9f9f9;
+        background: #f9f9f9;
     }
 
 
 
     /* The total progress gets shown by event listeners */
     #total-progress {
-      opacity: 0;
-      transition: opacity 0.3s linear;
+        opacity: 0;
+        transition: opacity 0.3s linear;
     }
 
     /* Hide the progress bar when finished */
     #previews .file-row.dz-success .progress {
-      opacity: 0;
-      transition: opacity 0.3s linear;
+        opacity: 0;
+        transition: opacity 0.3s linear;
     }
 
     /* Hide the delete button initially */
     #previews .file-row .delete {
-      display: none;
+        display: none;
     }
 
     /* Hide the start and cancel buttons and show the delete button */
 
     #previews .file-row.dz-success .start,
     #previews .file-row.dz-success .cancel {
-      display: none;
+        display: none;
     }
     #previews .file-row.dz-success .delete {
-      display: block;
+        display: block;
     }
 </style>
 
 <script>
-// Get the template HTML and remove it from the doument
+    Dropzone.options.myDropzone = {
+        init: function () {
+            thisDropzone = this;
+            $.get('<?= base_url() ?>admin/uploader/get_photo/', function (data) {
+                $.each(data, function (key, value) {
+                    var mockFile = {name: value.name, size: value.size};
+                    thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+                    thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>" + value.name);
+                });
+            });
+        }
+    };
     var previewNode = document.querySelector("#template");
     previewNode.id = "";
     var previewTemplate = previewNode.parentNode.innerHTML;
