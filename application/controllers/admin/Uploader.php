@@ -152,4 +152,18 @@ class Uploader extends CI_Controller {
             return TRUE;
         }
     }
+    
+    /**
+     * @description provides JSON for dropzone
+     */
+    public function get_photo_dz($id_album)
+    {
+        $photos = $this->foto->get_album_content($id_album);
+        foreach ($photos as $value) {
+                $photo['name'] = $value->name.'_thumb.jpg';
+                $photo['size'] = filesize('./index.php');
+                $result[] = $photo;
+        }
+        echo json_encode($result);
+    }
 }
