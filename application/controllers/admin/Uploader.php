@@ -122,8 +122,12 @@ class Uploader extends CI_Controller {
             print_r($this->image_lib->display_errors());
             die("Unable to resize and/or watermark picture.");
         }
-        
+
         chmod($picture_data['full_path'], 0700);
+        $foto['name']=$picture_data['raw_name'];
+//        TBD
+//        $foto['text']=  $this->input->post('text');
+        $this->foto->add_photo($foto,$this->uri->segment(4));
         return true;
     }
 
