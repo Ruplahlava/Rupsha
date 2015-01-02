@@ -39,7 +39,9 @@ class Uploader extends CI_Controller {
     public function upload() {
         // Pridani alba       
         if ($this->input->post() && $this->_validate_album($this->input->post())) {
-            $this->foto->add_album($this->input->post());
+            $post = $this->input->post();
+            $post['id_user'] = $this->session->userdata('id_user');
+            $this->foto->add_album($post);
             redirect(current_url());
             // Klasicke zobrazeni           
         } else if (FALSE !== $this->uri->segment(4) && !is_numeric($this->uri->segment(4))) {
@@ -50,6 +52,7 @@ class Uploader extends CI_Controller {
             if ('upload' === $this->uri->segment(5)) {
                 $this->_process_picture();
             } else {
+                // Zobrazeni uploaderu               
                 $this->data['album'] = $this->foto->get_album($this->session->userdata('id_user'),$this->uri->segment(4));
                 $this->load->view(self::UPLOADER_VIEW, $this->data);
             }
