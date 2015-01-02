@@ -21,7 +21,7 @@
             <div class="form-group">
                 <label for="inputDate" class="col-sm-2 control-label">Date</label>
                 <div class="col-sm-10">
-                    <input type="date" class="form-control" id="inputDate" placeholder="Date" name="date" value="<?=date('Y-m-d'); ?>">
+                    <input type="date" class="form-control" id="inputDate" placeholder="Date" name="date" value="<?= date('Y-m-d'); ?>">
                 </div>
             </div>
         </div>
@@ -43,12 +43,16 @@
 <div class="row">
     <div class="col-md-8">
         <div class="list-group">
-            <?php foreach ($album as $value): ?>
-            <a href="<?=current_url()?>/<?=$value->id?>" class="list-group-item">    
-                    <span class="badge"><?=$value->cnt?></span>
-                    <?=$value->name?>
-                </a>
-            <?php endforeach; ?>
+            <?php if (!empty($album[0])): ?>
+                <?php foreach ($album as $value): ?>
+                    <a href="<?= current_url() ?>/<?= $value->id ?>" class="list-group-item">    
+                        <span class="badge"><?= $value->cnt ?></span>
+                        <?= $value->name ?>
+                    </a>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="alert alert-info" role="alert">You have not created any albums yet!</div>
+            <?php endif; ?>
         </div>
     </div>
     <div class="col-md-4">
