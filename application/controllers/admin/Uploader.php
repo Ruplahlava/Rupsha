@@ -101,21 +101,29 @@ class Uploader extends CI_Controller {
             print_r($this->image_lib->display_errors());
             die("Unable to resize and/or watermark picture.");
         }
+        $config = null;
+        $config['image_library'] = 'gd2';
         $config['source_image'] = $picture_data['full_path'];
-        $config['wm_text'] = 'Copyright ' . date("Y") . ' - Štěpán Postránecký';
-        $config['wm_type'] = 'text';
-        $config['wm_font_path'] = './system/fonts/texb.ttf';
-        $config['wm_font_size'] = '16';
-        $config['wm_font_color'] = 'ffffff';
+        $config['wm_type'] = 'overlay';
+        $config['wm_overlay_path']  = './img/login/pick8_1.jpg'; //the overlay image
+        $config['wm_opacity']       = 50;
+//      coord of transparent pixel
+        $config['wm_x_transp']       = 0;
+        $config['wm_y_transp']       = 0;
         $config['wm_vrt_alignment'] = 'bottom';
-        $config['wm_hor_alignment'] = 'center';
+        $config['wm_hor_alignment'] = 'right';
         $config['wm_padding'] = '20';
+        $config['create_thumb'] = TRUE;
+        $config['thumb_marker'] = "_wm";
+        
         $this->image_lib->clear();
         $this->image_lib->initialize($config);
-        if (!$this->image_lib->watermark()) {
+        if (!$this->image_lib->watermark()) {   
             print_r($this->image_lib->display_errors());
             die("Unable to resize and/or watermark picture.");
         }
+        
+        chmod($picture_data['full_path'], 0700);
         return true;
     }
 
