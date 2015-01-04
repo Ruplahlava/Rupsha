@@ -8,7 +8,7 @@
 class User extends CI_Model {
 
     /**
-     * logged
+     * get_user_login
      * 
      * @param string $login
      * @param string $password
@@ -22,6 +22,19 @@ class User extends CI_Model {
         $user = $this->db->get_where('users', $credentials);
 
         return $user;
+    }
+        
+    /**
+     * 
+     * @param int $id
+     * @return array
+     */
+    public function get_user($id) {
+        $query = $this->db->get_where('users', array('id' => $id));
+        if ($query->num_rows !== 0) {
+            return $query->result();
+        }
+        return false;
     }
 
     /**
