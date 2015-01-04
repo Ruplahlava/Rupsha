@@ -41,6 +41,7 @@ class Uploader extends CI_Controller {
         if ($this->input->post() && $this->_validate_album($this->input->post())) {
             $post = $this->input->post();
             $post['id_user'] = $this->session->userdata('id_user');
+            $post['hash'] = substr(bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)),0,10);
             $this->foto->add_album($post);
             redirect(current_url());
             // Klasicke zobrazeni           
@@ -127,6 +128,7 @@ class Uploader extends CI_Controller {
 
         chmod($picture_data['full_path'], 0700);
         $foto['name']=$picture_data['raw_name'];
+        $foto['extension']=$picture_data['file_ext'];
 //        TBD
 //        $foto['text']=  $this->input->post('text');
         $this->foto->add_photo($foto,$this->uri->segment(4));
