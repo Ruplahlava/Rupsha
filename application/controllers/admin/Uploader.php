@@ -178,7 +178,7 @@ class Uploader extends CI_Controller {
     {
         $photos = $this->foto->get_album_content($id_album);
         foreach ($photos as $value) {
-                $photo['name'] = $value->name.'_thumb.jpg';
+                $photo['name'] = $value->name.'_thumb'.$value->extension;
                 $photo['size'] = filesize('./index.php');
                 $result[] = $photo;
         }
