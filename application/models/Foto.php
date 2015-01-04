@@ -20,10 +20,12 @@ class Foto extends CI_Model {
                     FROM foto
                     GROUP BY id_album
                     )ft ON album.id = ft.id_album
-                    WHERE id_user ='.$id_user;
+                    WHERE id_user =' . $id_user;
             $album_content = $this->db->query($sql);
+        } elseif (is_array($album)) {
+            $album_content = $this->db->get_where('album', $album);
         } else {
-            $album_content = $this->db->get_where('album', array('id' => $album,'id_user'=>$id_user));
+            $album_content = $this->db->get_where('album', array('id' => $album, 'id_user' => $id_user));
         }
         if ($album_content->num_rows() !== 0) {
             return $album_content->result();
