@@ -92,40 +92,9 @@ class Uploader extends CI_Controller {
     public function _process_picture() {
         $this->load->library('image_lib');
         $picture_data = $this->_upload_picture();
-        $config['image_library'] = 'gd2';
-        $config['source_image'] = $picture_data['full_path'];
-        $config['maintain_ratio'] = true;
-        $config['create_thumb'] = TRUE;
-        $config['width'] = 220;
-        $config['height'] = 220;
-        $this->image_lib->clear();
-        $this->image_lib->initialize($config);
-        if (!$this->image_lib->resize()) {
-            print_r($this->image_lib->display_errors());
-            die("Unable to resize and/or watermark picture.");
-        }
-        $config = null;
-        $config['image_library'] = 'gd2';
-        $config['source_image'] = $picture_data['full_path'];
-        $config['wm_type'] = 'overlay';
-        $config['wm_overlay_path']  = './img/login/pick8_1.jpg'; //the overlay image
-        $config['wm_opacity']       = 50;
-//      coord of transparent pixel
-        $config['wm_x_transp']       = 0;
-        $config['wm_y_transp']       = 0;
-        $config['wm_vrt_alignment'] = 'bottom';
-        $config['wm_hor_alignment'] = 'right';
-        $config['wm_padding'] = '20';
-        $config['create_thumb'] = TRUE;
-        $config['thumb_marker'] = "_wm";
+        $this->_create_thumb($picture_data);
+        $this->_create_watermark($picture_data);
         
-        $this->image_lib->clear();
-        $this->image_lib->initialize($config);
-        if (!$this->image_lib->watermark()) {   
-            print_r($this->image_lib->display_errors());
-            die("Unable to resize and/or watermark picture.");
-        }
-
         chmod($picture_data['full_path'], 0700);
         $foto['name']=$picture_data['raw_name'];
         $foto['extension']=$picture_data['file_ext'];
@@ -133,6 +102,53 @@ class Uploader extends CI_Controller {
 //        $foto['text']=  $this->input->post('text');
         $this->foto->add_photo($foto,$this->uri->segment(4));
         return true;
+    }
+    
+    /**
+     * 
+     * @param array $picture_data
+     */
+    public function _create_thumb($picture_data) {
+        $config['image_library'] = 'gd2';
+        $config['source_image'] = $picture_data['full_path'];
+        $config['maintain_ratio'] = true;
+        $config['create_thumb'] = TRUE;
+        $config['width'] = 220;
+        $config['height'] = 220;
+        
+        $this->image_lib->clear();
+        $this->image_lib->initialize($config);
+        if (!$this->image_lib->resize()) {
+            print_r($this->image_lib->display_errors());
+            die("Unable to resize and/or watermark picture.");
+        }
+    }
+    
+    /**
+     * 
+     * @param array $picture_data
+     */
+    public function _create_watermark($picture_data) {
+        $config['image_library'] = 'gd2';
+        $config['source_image'] = $picture_data['full_path'];
+        $config['wm_type'] = 'overlay';
+        $config['wm_overlay_path'] = './img/login/pick8_1.jpg'; //the overlay image
+        $config['wm_opacity'] = 50;
+//      coord of transparent pixel
+        $config['wm_x_transp'] = 0;
+        $config['wm_y_transp'] = 0;
+        $config['wm_vrt_alignment'] = 'bottom';
+        $config['wm_hor_alignment'] = 'right';
+        $config['wm_padding'] = '20';
+        $config['create_thumb'] = TRUE;
+        $config['thumb_marker'] = "_wm";
+
+        $this->image_lib->clear();
+        $this->image_lib->initialize($config);
+        if (!$this->image_lib->watermark()) {
+            print_r($this->image_lib->display_errors());
+            die("Unable to watermark picture.");
+        }
     }
 
     /**
