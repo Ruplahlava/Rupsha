@@ -133,7 +133,7 @@ class Uploader extends CI_Controller {
         $config['image_library'] = 'gd2';
         $config['source_image'] = $picture_data['full_path'];
         $config['wm_type'] = 'overlay';
-        $config['wm_overlay_path'] = './img/login/pick8_1.jpg'; //the overlay image
+        $config['wm_overlay_path'] = './img/wm/dnc.png'; //the overlay image
         $config['wm_opacity'] = 50;
 //      coord of transparent pixel
         $config['wm_x_transp'] = 0;
