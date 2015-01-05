@@ -36,10 +36,11 @@
     }
 
     /* Hide the delete button initially */
-    #previews .file-row .delete {
+    #previews .file-row .start, 
+    #previews .file-row .cancel {
         display: none;
     }
-
+    
     /* Hide the start and cancel buttons and show the delete button */
 
     #previews .file-row.dz-success .start,
@@ -52,6 +53,7 @@
 </style>
 
 <script>
+    
     var previewNode = document.querySelector("#template");
     previewNode.id = "";
     var previewTemplate = previewNode.parentNode.innerHTML;
@@ -74,11 +76,15 @@
                     thisDropzone.options.addedfile.call(thisDropzone, mockFile);
                     thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>/" + value.name);
                 });
-            }, 'json');
+            }, 'json'); 
         }
     });
+            
     myDropzone.on("addedfile", function (file) {
         // Hookup the start button
+        $(file.previewElement).find('.delete').css('display',"none");
+        $(file.previewElement).find('.start').css('display',"inline");
+        $(file.previewElement).find('.cancel').css('display',"inline");
         file.previewElement.querySelector(".start").onclick = function () {
             myDropzone.enqueueFile(file);
         };
@@ -99,6 +105,16 @@
     // Hide the total progress bar when nothing's uploading anymore
     myDropzone.on("queuecomplete", function (progress) {
         document.querySelector("#total-progress").style.opacity = "0";
+    });
+    //on succesfull file upload
+    myDropzone.on("success", function(file,response) {
+    //show delete button, hide others
+    
+    });
+    
+    myDropzone.on("success", function(file) {
+    //show delete button, hide others
+    
     });
 
     // Setup the buttons for all transfers
