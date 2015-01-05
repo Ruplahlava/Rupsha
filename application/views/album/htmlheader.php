@@ -21,4 +21,8 @@
         <link rel="stylesheet" href="<?= base_url() ?>css/main.css">
 
         <script src="<?= base_url() ?>js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="<?= base_url() ?>js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
+        <link href="<?= base_url() ?>css/nanogallery.min.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="<?= base_url() ?>js/jquery.nanogallery.min.js"></script>
     </head>
