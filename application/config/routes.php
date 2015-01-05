@@ -91,8 +91,8 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['admin'] = 'admin/uploader';
 $route['admin/upload'] = 'admin/uploader/upload/';
-$route['admin/upload/(.+)'] = 'admin/uploader/upload/$1';
-$route['(.+)'] = 'album/index/$1';
+$route['admin/upload/(:any)'] = 'admin/uploader/upload/$1';
+$route['(:any)'] = 'album/index/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
