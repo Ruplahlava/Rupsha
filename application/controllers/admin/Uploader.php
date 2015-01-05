@@ -45,13 +45,14 @@ class Uploader extends CI_Controller {
             $this->foto->add_album($post);
             redirect(current_url());
             // Klasicke zobrazeni           
-        } else if (NULL !== $this->uri->segment(4) && !is_numeric($this->uri->segment(4))) {
+        } else if (FALSE !== $this->uri->segment(4) && !is_numeric($this->uri->segment(4))) {
             $this->data['album'] = $this->foto->get_album($this->session->userdata('id_user'));
             $this->load->view(self::ALBUM_ADD_VIEW, $this->data);
             // Nahravani fotek
         } else {
             if ('upload' === $this->uri->segment(5)) {
-                $this->_process_picture();
+                $picture_data = $this->_process_picture();
+                json_encode(array('name'=>$picture_data['raw_name'],'size'=>$picture_data['full_path']));
             } else {
                 // Zobrazeni uploaderu     
                 $this->data['id_album'] = $this->uri->segment(4);
@@ -101,7 +102,7 @@ class Uploader extends CI_Controller {
 //        TBD
 //        $foto['text']=  $this->input->post('text');
         $this->foto->add_photo($foto,$this->uri->segment(4));
-        return true;
+        return $picture_data;
     }
     
     /**
@@ -179,7 +180,7 @@ class Uploader extends CI_Controller {
         $photos = $this->foto->get_album_content($id_album);
         foreach ($photos as $value) {
                 $photo['name'] = $value->name.'_thumb'.$value->extension;
-                $photo['size'] = filesize('./index.php');
+                $photo['size'] = filesize('./img/user/'.$this->session->userdata('login').'/'.$id_album.'/'.$value->name.'_wm'.$value->extension);
                 $result[] = $photo;
         }
         echo json_encode($result);
