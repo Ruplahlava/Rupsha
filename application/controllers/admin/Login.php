@@ -69,7 +69,7 @@ class Login extends CI_Controller
         $this->form_validation->set_rules('login', 'Username', 'required|encode_php_tags');
         $this->form_validation->set_rules('password', 'Password', 'required|encode_php_tags');
 
-        if ($this->form_validation->run() == FALSE) {
+        if (FALSE === $this->form_validation->run()) {
             return FALSE;
         } else {
             return TRUE;

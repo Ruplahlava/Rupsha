@@ -45,7 +45,7 @@ class Uploader extends CI_Controller {
             $this->foto->add_album($post);
             redirect(current_url());
             // Klasicke zobrazeni           
-        } else if (FALSE !== $this->uri->segment(4) && !is_numeric($this->uri->segment(4))) {
+        } else if (NULL !== $this->uri->segment(4) && !is_numeric($this->uri->segment(4))) {
             $this->data['album'] = $this->foto->get_album($this->session->userdata('id_user'));
             $this->load->view(self::ALBUM_ADD_VIEW, $this->data);
             // Nahravani fotek
@@ -164,7 +164,7 @@ class Uploader extends CI_Controller {
         $this->form_validation->set_rules('place', 'place', 'encode_php_tags|htmlspecialchars');
         $this->form_validation->set_rules('text', 'Text', 'encode_php_tags|htmlspecialchars|nl2br');
 
-        if ($this->form_validation->run() == FALSE) {
+        if (FALSE === $this->form_validation->run()) {
             return FALSE;
         } else {
             return TRUE;
