@@ -84,5 +84,19 @@ class Foto extends CI_Model {
     public function increase_hits($table, $id) {
         return $this->db->query("UPDATE $table SET hits = hits +1 WHERE id = $id");
     }
+    
+    public function delete_photo($photo) {
+        if (is_array($photo)) {
+            $query = $this->db->get_where('foto',$photo);
+            $this->db->delete('foto',$photo);
+        }else{
+            $query = $this->db->get_where('foto',array('id'=>$photo));
+            $this->db->delete('foto',array('id'=>$photo));
+        }
+        if($query->num_rows() !== 0){
+            return $query->result();
+        }
+        return FALSE;
+    }
 
 }

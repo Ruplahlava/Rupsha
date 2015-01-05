@@ -112,9 +112,9 @@
     
     });
     
-    myDropzone.on("success", function(file) {
+    myDropzone.on("removedfile", function(file) {
     //show delete button, hide others
-    
+        $.post( "<?= base_url() ?>admin/uploader/del_photo_dz/", { name: file.name } );
     });
 
     // Setup the buttons for all transfers

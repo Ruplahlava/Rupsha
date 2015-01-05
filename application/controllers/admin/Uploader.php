@@ -185,4 +185,13 @@ class Uploader extends CI_Controller {
         }
         echo json_encode($result);
     }
+    
+    public function del_photo_dz() {
+        $foto['name'] =  substr($this->input->post('name'),0,-10);
+        if(FALSE !== $foto_db = $this->foto->delete_photo($foto)){
+            unlink('./img/user/'.$this->session->userdata('login').'/'.$foto_db[0]->id_album.'/'.$foto_db[0]->name.'_wm'.$foto_db[0]->extension);
+            unlink('./img/user/'.$this->session->userdata('login').'/'.$foto_db[0]->id_album.'/'.$foto_db[0]->name.'_thumb'.$foto_db[0]->extension);
+            unlink('./img/user/'.$this->session->userdata('login').'/'.$foto_db[0]->id_album.'/'.$foto_db[0]->name.$foto_db[0]->extension);
+        }
+    }
 }
