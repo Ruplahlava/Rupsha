@@ -7,9 +7,9 @@ $(function () {
     });
     $.fn.bootstrapSwitch.defaults.size = 'mini';
     $.fn.bootstrapSwitch.defaults.onColor = 'danger';
+    $.fn.bootstrapSwitch.defaults.onColor = 'danger';
     $("[name='confirm-switch']").bootstrapSwitch();
-    $("[name='confirm-switch']").change(function () {
-        console.log('arr');
+    $("[name='confirm-switch']").on('switchChange.bootstrapSwitch', function (event, state) {
         $('.btn-delete').toggleClass("disabled");
     });
 });
