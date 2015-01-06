@@ -1,6 +1,16 @@
 <?php $this->load->view('admin/htmlheader'); ?>
 <?php $this->load->view('admin/header'); ?>
-    <div id="actions" class="row">
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <input type="text" class="form-control input-copy" value="<?= base_url() ?><?= $album[0]->hash ?>" disabled>
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-copy" data-clipboard-text="<?= base_url() ?><?= $album[0]->hash ?>" type="button" data-toggle="popover" data-trigger="focus" data-content="Copied!">Copy</button>
+            </span>
+        </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+</div>    
+<div id="actions" class="row">
         <div class="col-lg-7">
             <!-- The fileinput-button span is used to style the file input field as button -->
             <span class="btn btn-success fileinput-button">
