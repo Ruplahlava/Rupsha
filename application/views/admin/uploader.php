@@ -45,7 +45,6 @@
                 <span class="preview"><img data-dz-thumbnail /></span>
             </div>
             <div>
-                <p class="name" data-dz-name></p>
                 <strong class="error text-danger" data-dz-errormessage></strong>
             </div>
             <div>
