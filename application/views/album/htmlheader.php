@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="<?= base_url() ?>css/bootstrap.min.css">
         <style>
             body {
-                padding-top: 50px;
+                padding-top: 20px;
                 padding-bottom: 20px;
             }
         </style>
