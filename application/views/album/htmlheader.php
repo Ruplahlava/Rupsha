@@ -7,7 +7,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title><?=$title?></title>
-        <meta name="description" content="">
+        <meta name="description" content="Pictures">
             <meta property="og:image" content="<?= base_url() ?>img/user/<?= $user[0]->login ?>/<?= $album[0]->id ?>/<?= $photo[0]->name ?>_thumb<?= $photo[0]->extension ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
