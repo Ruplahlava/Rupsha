@@ -51,6 +51,7 @@ class Album extends CI_Controller {
         $this->data['photo'] = $this->foto->get_album_content($album[0]->id);
         $this->data['user'] = $this->user->get_user($album[0]->id_user);
         $this->data['title'] = $album[0]->name.' - Rupsha';
+        $this->foto->increase_hits('album',$album[0]->id);
         $this->load->view(self::ALBUM_VIEW, $this->data);
     }
 
