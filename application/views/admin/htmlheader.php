@@ -18,6 +18,7 @@
             }
         </style>
         <link rel="stylesheet" href="<?= base_url() ?>css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="<?= base_url() ?>css/bootstrap-switch.min.css">
         <link rel="stylesheet" href="<?= base_url() ?>css/main.css">
         <?php if (isset($login_css)): ?>
             <link rel="stylesheet" href="<?= base_url() ?>css/login.css">

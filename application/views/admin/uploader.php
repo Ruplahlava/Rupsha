@@ -9,6 +9,9 @@
             </span>
         </div><!-- /input-group -->
     </div><!-- /.col-lg-6 -->
+    <div class="col-lg-6">
+        <button type="button" class="btn btn-danger btn-delete disabled">Delete album</button> <input type="checkbox" name="confirm-switch">
+    </div><!-- /.col-lg-6 -->
 </div>    
 <div id="actions" class="row">
         <div class="col-lg-7">
