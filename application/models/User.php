@@ -5,7 +5,8 @@
  *
  * @author Parek
  */
-class User extends CI_Model {
+class User extends CI_Model
+{
 
     /**
      * get_user_login
@@ -14,22 +15,24 @@ class User extends CI_Model {
      * @param string $password
      * @return boolean
      */
-    public function get_user_login($login, $password) {
+    public function get_user_login($login, $password)
+    {
         $credentials = array(
-            'login' => $login,
+            'login'    => $login,
             'password' => sha1($password)
         );
-        $user = $this->db->get_where('users', $credentials);
+        $user        = $this->db->get_where('users', $credentials);
 
         return $user;
     }
-        
+
     /**
      * 
      * @param int $id
      * @return array
      */
-    public function get_user($id) {
+    public function get_user($id)
+    {
         $query = $this->db->get_where('users', array('id' => $id));
         if ($query->num_rows !== 0) {
             return $query->result();
@@ -42,7 +45,8 @@ class User extends CI_Model {
      * @param string $login
      * @return integer
      */
-    public function get_id($login) {
+    public function get_id($login)
+    {
         $query = $this->db->get_where('users', array('login' => $login));
         if ($query->num_rows !== 0) {
             $result = $query->result();

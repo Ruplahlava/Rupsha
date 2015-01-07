@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Desc
  */
-class Foto extends CI_Model {
+class Foto extends CI_Model
+{
 
     /**
      * get_album provides single album if id is specified, all if it is not
@@ -10,9 +12,10 @@ class Foto extends CI_Model {
      * @param int/boolean $album
      * @return boolean
      */
-    public function get_album($id_user,$album = FALSE) {
+    public function get_album($id_user, $album = FALSE)
+    {
         if (FALSE === $album && empty($album)) {
-            $sql = 'SELECT * 
+            $sql           = 'SELECT * 
                     FROM album
                     LEFT JOIN (
 
@@ -39,7 +42,8 @@ class Foto extends CI_Model {
      * @param array $album
      * @return mixed
      */
-    public function get_album_content($album) {
+    public function get_album_content($album)
+    {
         $album_content = $this->db->get_where('foto', array('id_album' => $album));
         if ($album_content->num_rows() !== 0) {
             return $album_content->result();
@@ -53,7 +57,8 @@ class Foto extends CI_Model {
      * @param array $post
      * @return boolean
      */
-    public function add_album($post) {
+    public function add_album($post)
+    {
         if (isset($post['date']) && empty($post['date'])) {
             $post['date'] = date('Y-m-d H:i:s', strtotime($post['date']));
         }
@@ -69,7 +74,8 @@ class Foto extends CI_Model {
      * @param int $id
      * @return boolean 
      */
-    public function add_photo($data, $id) {
+    public function add_photo($data, $id)
+    {
         $data['id_album'] = $id;
         return $this->db->insert("foto", $data);
     }
@@ -81,37 +87,40 @@ class Foto extends CI_Model {
      * @param int $id
      * @return boolean
      */
-    public function increase_hits($table, $id) {
+    public function increase_hits($table, $id)
+    {
         return $this->db->query("UPDATE $table SET hits = hits +1 WHERE id = $id");
     }
+
     /**
      * 
      * @param mixed $photo
      * @return boolean or db result
      */
-    public function delete_photo($photo) {
+    public function delete_photo($photo)
+    {
         if (is_array($photo)) {
-            $query = $this->db->get_where('foto',$photo);
-            $this->db->delete('foto',$photo);
-        }else{
-            $query = $this->db->get_where('foto',array('id'=>$photo));
-            $this->db->delete('foto',array('id'=>$photo));
+            $query = $this->db->get_where('foto', $photo);
+            $this->db->delete('foto', $photo);
+        } else {
+            $query = $this->db->get_where('foto', array('id' => $photo));
+            $this->db->delete('foto', array('id' => $photo));
         }
-        if($query->num_rows() !== 0){
+        if ($query->num_rows() !== 0) {
             return $query->result();
         }
         return FALSE;
     }
-    
+
     /**
      * 
      * @param int $id
      */
     public function delete_album($id)
     {
-        $query = $this->db->get_where('album',array('id'=>$id));
-        $this->db->delete('album',array('id'=>$id));
-        if($query->num_rows() !== 0){
+        $query = $this->db->get_where('album', array('id' => $id));
+        $this->db->delete('album', array('id' => $id));
+        if ($query->num_rows() !== 0) {
             return $query->result();
         }
         return FALSE;
