@@ -7,6 +7,5 @@
     <![endif]-->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <?php $this->load->view('admin/menu'); ?>
-
     </nav>
     <div class="container">
