@@ -84,7 +84,11 @@ class Foto extends CI_Model {
     public function increase_hits($table, $id) {
         return $this->db->query("UPDATE $table SET hits = hits +1 WHERE id = $id");
     }
-    
+    /**
+     * 
+     * @param mixed $photo
+     * @return boolean or db result
+     */
     public function delete_photo($photo) {
         if (is_array($photo)) {
             $query = $this->db->get_where('foto',$photo);
@@ -93,6 +97,20 @@ class Foto extends CI_Model {
             $query = $this->db->get_where('foto',array('id'=>$photo));
             $this->db->delete('foto',array('id'=>$photo));
         }
+        if($query->num_rows() !== 0){
+            return $query->result();
+        }
+        return FALSE;
+    }
+    
+    /**
+     * 
+     * @param int $id
+     */
+    public function delete_album($id)
+    {
+        $query = $this->db->get_where('album',array('id'=>$id));
+        $this->db->delete('album',array('id'=>$id));
         if($query->num_rows() !== 0){
             return $query->result();
         }

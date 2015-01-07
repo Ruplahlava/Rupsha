@@ -194,4 +194,26 @@ class Uploader extends CI_Controller {
             unlink('./img/user/'.$this->session->userdata('login').'/'.$foto_db[0]->id_album.'/'.$foto_db[0]->name.$foto_db[0]->extension);
         }
     }
+    
+    /**
+     * 
+     * @param int $id
+     */
+    public function delete_album($id)
+    {
+        $photos = $this->foto->get_album_content($id);
+        if (FALSE !== $photos) {
+            foreach ($photos as $value) {
+                if (FALSE !== $foto_db = $this->foto->delete_photo($value->id)) {
+                    unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_wm' . $foto_db[0]->extension);
+                    unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_thumb' . $foto_db[0]->extension);
+                    unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . $foto_db[0]->extension);
+                }
+            }
+            rmdir('./img/user/' . $this->session->userdata('login') . '/' . $photos[0]->id_album);
+        }
+        $this->foto->delete_album($id);
+        redirect(base_url() . 'admin/uploader/upload');
+    }
+
 }
