@@ -6,11 +6,21 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<?= base_url() ?>admin">Rupsha - admin</a>
+        <a class="navbar-brand" href="<?= base_url() ?>admin">Rupsha</a>
     </div>
-    <div id="navbar" class="navbar-collapse collapse">
+    <div id="navbar" class="navbar-collapse collapse navbar-right">
         <ul class="nav navbar-nav">
-            <li><a href="<?= base_url() ?>admin/user">About</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="<?= base_url() ?>admin/settings/account">Account</a></li>
+                    <li><a href="<?= base_url() ?>admin/settings/page">Page</a></li>
+                    <li><a href="<?= base_url() ?>admin/settings/gallery">Gallery</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Administration</li>
+                    <li><a href="<?= base_url() ?>admin/settings/users">Users</a></li>
+                </ul>
+            </li>
         </ul>
         <a href="<?= base_url() ?>admin/login/logout" class="btn btn-success navbar-btn navbar-right">Log out</a>
     </div><!--/.nav-collapse -->
