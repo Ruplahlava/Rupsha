@@ -7,7 +7,7 @@
  * @Reworked by @kaptenn_com (tw)
  * @package PARALLAX LOGIN.
 -->
-<script src="<?=  base_url()?>js/TweenLite.min.js"></script>
+<script src="<?= base_url() ?>js/TweenLite.min.js"></script>
 <body>
     <div class="container">
         <div class="row vertical-offset-100">
@@ -15,7 +15,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">                                
                         <div class="row-fluid user-row">
-                            <img src="<?=  base_url()?>img/login/logo_sm_2_mr_1.png" class="img-responsive" alt="Conxole Admin"/>
+                            <img src="<?= base_url() ?>img/login/logo_sm_2_mr_1.png" class="img-responsive" alt="Conxole Admin"/>
                         </div>
                     </div>
                     <div class="panel-body">

@@ -14,13 +14,13 @@
 class Login extends CI_Controller
 {
     CONST LOGIN_VIEW = "admin/login";
-    
+
     protected $data;
-    
+
     public function __construct()
     {
         parent::__construct();
-        $this->data['title'] = "Login - Rupsha";
+        $this->data['title']     = "Login - Rupsha";
         $this->data['login_css'] = true;
     }
 

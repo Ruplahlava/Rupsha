@@ -5,15 +5,16 @@
  *
  * @author Parek
  */
-class Album extends CI_Controller {
-
-    const ALBUM_VIEW = 'album/album';
+class Album extends CI_Controller
+{
+    const ALBUM_VIEW   = 'album/album';
     const WELCOME_VIEW = '';
-    const ERROR_VIEW = '';
+    const ERROR_VIEW   = '';
 
     protected $data;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -21,7 +22,8 @@ class Album extends CI_Controller {
      * @description Main viewing method
      * @param string $hash
      */
-    public function index($hash = NULL) {
+    public function index($hash = NULL)
+    {
         if (NULL === $hash) {
             // welcome page
             $this->_welcome();
@@ -37,7 +39,8 @@ class Album extends CI_Controller {
     /**
      * 
      */
-    public function _welcome() {
+    public function _welcome()
+    {
         
     }
 
@@ -45,20 +48,22 @@ class Album extends CI_Controller {
      * 
      * @param array $album
      */
-    public function _show_album($album) {
+    public function _show_album($album)
+    {
         $this->load->model('user');
         $this->data['album'] = $album;
         $this->data['photo'] = $this->foto->get_album_content($album[0]->id);
-        $this->data['user'] = $this->user->get_user($album[0]->id_user);
-        $this->data['title'] = $album[0]->name.' - Rupsha';
-        $this->foto->increase_hits('album',$album[0]->id);
+        $this->data['user']  = $this->user->get_user($album[0]->id_user);
+        $this->data['title'] = $album[0]->name . ' - Rupsha';
+        $this->foto->increase_hits('album', $album[0]->id);
         $this->load->view(self::ALBUM_VIEW, $this->data);
     }
 
     /**
      * 
      */
-    public function _show_error() {
+    public function _show_error()
+    {
         
     }
 

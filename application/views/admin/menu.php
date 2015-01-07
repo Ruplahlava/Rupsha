@@ -6,13 +6,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Rupsha - admin</a>
+        <a class="navbar-brand" href="<?= base_url() ?>admin">Rupsha - admin</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-            <li class="active"><a href="">Home</a></li>
-            <li><a href="">About</a></li>
+            <li><a href="<?= base_url() ?>admin/user">About</a></li>
         </ul>
-    <a href="<?= base_url() ?>admin/login/logout" class="btn btn-success navbar-btn navbar-right">Log out</a>
+        <a href="<?= base_url() ?>admin/login/logout" class="btn btn-success navbar-btn navbar-right">Log out</a>
     </div><!--/.nav-collapse -->
 </div><!--/.container -->

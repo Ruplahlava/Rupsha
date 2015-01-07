@@ -47,15 +47,17 @@ Line Number: <?php echo $exception->getLine(); ?>
 
 <?php if (defined('SHOW_DEBUG_BACKTRACE') && SHOW_DEBUG_BACKTRACE === TRUE): ?>
 
-Backtrace:
-	<?php foreach ($exception->getTrace() as $error): ?>
-		<?php if (isset($error['file']) && strpos($error['file'], realpath(BASEPATH)) !== 0): ?>
+    Backtrace:
+    <?php foreach ($exception->getTrace() as $error): ?>
+        <?php if (isset($error['file']) && strpos($error['file'], realpath(BASEPATH)) !== 0): ?>
 
-	File: <?php echo $error['file']; ?>
-	Line: <?php echo $error['line']; ?>
-	Function: <?php echo $error['function']; ?>
+            File: <?php echo $error['file']; ?>
+            Line: <?php echo $error['line']; ?>
+            Function: <?php echo $error['function']; ?>
 
-		<?php endif ?>
+        <?php endif ?>
 
-	<?php endforeach ?>
-<?php endif ?>
+    <?php endforeach ?>
+    <?php
+
+ endif ?>
