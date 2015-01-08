@@ -53,6 +53,7 @@ class Uploader extends CI_Controller
             $this->load->view(self::ALBUM_ADD_VIEW, $this->data);
             // Nahravani fotek
         } else {
+            $this->authentication->is_owner($this->uri->segment(4));
             if ('upload' === $this->uri->segment(5)) {
                 $picture_data = $this->_process_picture();
                 json_encode(array('name' => $picture_data['raw_name'], 'size' => $picture_data['full_path']));
@@ -185,6 +186,7 @@ class Uploader extends CI_Controller
      */
     public function get_photo_dz($id_album)
     {
+        $this->authentication->is_owner($id_album);
         $photos = $this->foto->get_album_content($id_album);
         foreach ($photos as $value) {
             $photo['name'] = $value->name . '_thumb' . $value->extension;
@@ -198,6 +200,7 @@ class Uploader extends CI_Controller
     {
         $foto['name'] = substr($this->input->post('name'), 0, -10);
         if (FALSE !== $foto_db      = $this->foto->delete_photo($foto)) {
+            $this->authentication->is_owner($foto_db[0]->id_album);
             unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_wm' . $foto_db[0]->extension);
             unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_thumb' . $foto_db[0]->extension);
             unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . $foto_db[0]->extension);
@@ -210,6 +213,7 @@ class Uploader extends CI_Controller
      */
     public function delete_album($id)
     {
+        $this->authentication->is_owner($id);
         $photos = $this->foto->get_album_content($id);
         if (FALSE !== $photos) {
             foreach ($photos as $value) {

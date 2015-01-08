@@ -79,6 +79,11 @@ class Foto extends CI_Model
         $data['id_album'] = $id;
         return $this->db->insert("foto", $data);
     }
+    
+    public function get_photo($id)
+    {
+        return $this->db->get_where('foto',array('id'=>$id))->result();
+    }
 
     /**
      * increase_hits
