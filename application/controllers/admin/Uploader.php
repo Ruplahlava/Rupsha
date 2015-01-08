@@ -43,13 +43,13 @@ class Uploader extends CI_Controller
         // Pridani alba       
         if ($this->input->post() && $this->_validate_album($this->input->post())) {
             $post            = $this->input->post();
-            $post['id_user'] = $this->session->userdata('id_user');
+            $post['id_user'] = $this->authentication->get_user_id();
             $post['hash']    = substr(bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)), 0, 10);
             $this->foto->add_album($post);
             redirect(current_url());
             // Klasicke zobrazeni           
         } else if (FALSE !== $this->uri->segment(4) && !is_numeric($this->uri->segment(4))) {
-            $this->data['album'] = $this->foto->get_album($this->session->userdata('id_user'));
+            $this->data['album'] = $this->foto->get_album($this->authentication->get_user_id());
             $this->load->view(self::ALBUM_ADD_VIEW, $this->data);
             // Nahravani fotek
         } else {
@@ -60,8 +60,8 @@ class Uploader extends CI_Controller
             } else {
                 // Zobrazeni uploaderu     
                 $this->data['id_album'] = $this->uri->segment(4);
-                $this->data['user']     = $this->session->userdata('login');
-                $this->data['album']    = $this->foto->get_album($this->session->userdata('id_user'), $this->uri->segment(4));
+                $this->data['user']     = $this->authentication->get_user_login();
+                $this->data['album']    = $this->foto->get_album($this->authentication->get_user_id(), $this->uri->segment(4));
                 $this->load->view(self::UPLOADER_VIEW, $this->data);
             }
         }
@@ -73,7 +73,7 @@ class Uploader extends CI_Controller
      */
     public function _upload_picture()
     {
-        $config['upload_path']   = self::UPLOAD_PATH . $this->session->userdata('login') . '/' . $this->uri->segment(4);
+        $config['upload_path']   = self::UPLOAD_PATH . $this->authentication->get_user_login() . '/' . $this->uri->segment(4);
         $config['allowed_types'] = 'gif|jpg|png';
         $config['encrypt_name']  = TRUE;
 
@@ -190,7 +190,7 @@ class Uploader extends CI_Controller
         $photos = $this->foto->get_album_content($id_album);
         foreach ($photos as $value) {
             $photo['name'] = $value->name . '_thumb' . $value->extension;
-            $photo['size'] = filesize('./img/user/' . $this->session->userdata('login') . '/' . $id_album . '/' . $value->name . '_wm' . $value->extension);
+            $photo['size'] = filesize('./img/user/' . $this->authentication->get_user_login() . '/' . $id_album . '/' . $value->name . '_wm' . $value->extension);
             $result[]      = $photo;
         }
         echo json_encode($result);
@@ -201,9 +201,9 @@ class Uploader extends CI_Controller
         $foto['name'] = substr($this->input->post('name'), 0, -10);
         if (FALSE !== $foto_db      = $this->foto->delete_photo($foto)) {
             $this->authentication->is_owner($foto_db[0]->id_album);
-            unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_wm' . $foto_db[0]->extension);
-            unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_thumb' . $foto_db[0]->extension);
-            unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . $foto_db[0]->extension);
+            unlink('./img/user/' . $this->authentication->get_user_login() . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_wm' . $foto_db[0]->extension);
+            unlink('./img/user/' . $this->authentication->get_user_login() . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_thumb' . $foto_db[0]->extension);
+            unlink('./img/user/' . $this->authentication->get_user_login() . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . $foto_db[0]->extension);
         }
     }
 
@@ -218,12 +218,12 @@ class Uploader extends CI_Controller
         if (FALSE !== $photos) {
             foreach ($photos as $value) {
                 if (FALSE !== $foto_db = $this->foto->delete_photo($value->id)) {
-                    unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_wm' . $foto_db[0]->extension);
-                    unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_thumb' . $foto_db[0]->extension);
-                    unlink('./img/user/' . $this->session->userdata('login') . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . $foto_db[0]->extension);
+                    unlink('./img/user/' . $this->authentication->get_user_login() . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_wm' . $foto_db[0]->extension);
+                    unlink('./img/user/' . $this->authentication->get_user_login() . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . '_thumb' . $foto_db[0]->extension);
+                    unlink('./img/user/' . $this->authentication->get_user_login() . '/' . $foto_db[0]->id_album . '/' . $foto_db[0]->name . $foto_db[0]->extension);
                 }
             }
-            rmdir('./img/user/' . $this->session->userdata('login') . '/' . $photos[0]->id_album);
+            rmdir('./img/user/' . $this->authentication->get_user_login() . '/' . $photos[0]->id_album);
         }
         $this->foto->delete_album($id);
         redirect(base_url() . 'admin/uploader/upload');
