@@ -60,10 +60,15 @@
             init: function () {
                 thisDropzone = this;
                 $.get('<?= base_url() ?>admin/uploader/get_photo_dz/<?= $id_album ?>/', function (data) {
+                    var num = 0;
                     $.each(data, function (key, value) {
                         var mockFile = {name: value.name, size: value.size};
                         thisDropzone.options.addedfile.call(thisDropzone, mockFile);
                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>/" + value.name);
+                        var previewContainer = $(thisDropzone.previewsContainer.children[num]);
+                        console.log(previewContainer.append('<input type="text" name="" value="" class="pull-right">'));
+//                        previewContainer.appen
+                        num++;
                     });
                 }, 'json');
             }
@@ -75,10 +80,11 @@
             // Hookup the start button
             $(file.previewElement).find('.delete').css('display', "none");
             $(file.previewElement).find('.cancel').css('display', "inline");
-            $(file.previewElement).find('.progress').css('display', "inline");
             file.previewElement.querySelector(".start").onclick = function () {
                 myDropzone.enqueueFile(file);
             };
+            var popis = Dropzone.createElement('<div class="default_pic_container"><input type="text" name="' + file.name + '" value="" /> Popis</div>');
+            file.previewElement.appendChild(popis);
         });
 
         // Update the total progress bar
