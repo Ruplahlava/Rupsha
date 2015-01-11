@@ -66,10 +66,11 @@
                         thisDropzone.options.addedfile.call(thisDropzone, mockFile);
                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>/" + value.name);
                         var previewContainer = $(thisDropzone.previewsContainer.children[num]);
-                        previewContainer.append('<input type="text" name="text" value="" class="pull-right">');
+                        previewContainer.append('<a href="#" class="xeditable pull-right" data-type="text" data-pk="'+value.id+'" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text/<?= $id_album ?>" name="text">'+value.text+'</a>');
                         num++;
                     });
                 }, 'json');
+                $('.username').editable('enable');
             }
         });
 

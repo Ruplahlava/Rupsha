@@ -190,6 +190,8 @@ class Uploader extends CI_Controller
         foreach ($photos as $value) {
             $photo['name'] = $value->name . '_thumb' . $value->extension;
             $photo['size'] = filesize('./img/user/' . $this->authentication->get_user_login() . '/' . $id_album . '/' . $value->name . '_wm' . $value->extension);
+            $photo['text'] = $value->text;
+            $photo['id'] = $value->id;
             $result[]      = $photo;
         }
         echo json_encode($result);
@@ -226,6 +228,15 @@ class Uploader extends CI_Controller
         }
         $this->foto->delete_album($id);
         redirect(base_url() . 'admin/uploader/upload');
+    }
+    
+    /**
+     * 
+     * @param int $id_album
+     */
+    public function change_text_dz($id_album)
+    {
+        
     }
 
 }

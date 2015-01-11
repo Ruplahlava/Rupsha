@@ -12,4 +12,12 @@ $(function () {
     $("[name='confirm-switch']").on('switchChange.bootstrapSwitch', function (event, state) {
         $('.btn-delete').toggleClass("disabled");
     });
+    $.fn.editable.defaults.mode = 'popup';  
+   $.fn.editable.defaults.url = '/post'; 
+  
+    //editables 
+    $('#previews').editable({
+        selector: '.xeditable'
+    });
+    
 });
