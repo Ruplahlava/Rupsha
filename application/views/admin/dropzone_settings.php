@@ -66,8 +66,7 @@
                         thisDropzone.options.addedfile.call(thisDropzone, mockFile);
                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>/" + value.name);
                         var previewContainer = $(thisDropzone.previewsContainer.children[num]);
-                        console.log(previewContainer.append('<input type="text" name="" value="" class="pull-right">'));
-//                        previewContainer.appen
+                        previewContainer.append('<input type="text" name="" value="" class="pull-right">');
                         num++;
                     });
                 }, 'json');
@@ -83,8 +82,8 @@
             file.previewElement.querySelector(".start").onclick = function () {
                 myDropzone.enqueueFile(file);
             };
-            var popis = Dropzone.createElement('<div class="default_pic_container"><input type="text" name="' + file.name + '" value="" /> Popis</div>');
-            file.previewElement.appendChild(popis);
+            var input = Dropzone.createElement('<input type="text" name="' + file.name + '" value="" />');
+            file.previewElement.appendChild(input);
         });
 
         // Update the total progress bar
