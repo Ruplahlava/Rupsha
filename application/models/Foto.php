@@ -130,5 +130,22 @@ class Foto extends CI_Model
         }
         return FALSE;
     }
+    
+    /**
+     * 
+     * @param int $id_photo
+     * @param array $data
+     * @return boolean
+     */
+    public function update_photo($id_photo,$data)
+    {
+        if(!is_array($data)){
+            die('Second parameter must be an array!');
+        }
+        if($this->db->update('foto',$data,'id='.$id_photo)){
+            return true;
+        }
+        return false;
+    }
 
 }
