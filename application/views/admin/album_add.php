@@ -1,7 +1,7 @@
 <?php $this->load->view('admin/htmlheader'); ?>
 <?php $this->load->view('admin/header'); ?>
 <div class="row">
-
+    <h2>Create new album</h2>
 </div>
 <div class="row">
     <form class="form-horizontal" role="form" method="post" action="<?= current_url() ?>">
