@@ -66,7 +66,11 @@
                         thisDropzone.options.addedfile.call(thisDropzone, mockFile);
                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>/" + value.name);
                         var previewContainer = $(thisDropzone.previewsContainer.children[num]);
-                        previewContainer.append('<a href="#" class="xeditable pull-right" data-type="text" data-pk="'+value.id+'" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text/<?= $id_album ?>" name="text">'+value.text+'</a>');
+                        if (value.text == "") {
+                            previewContainer.append('<a href="#" class="xeditable pull-right text-muted" data-type="text" data-pk="' + value.id + '" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text_dz/" name="text">Empty description</a>');
+                        } else {
+                            previewContainer.append('<a href="#" class="xeditable pull-right" data-type="text" data-pk="' + value.id + '" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text_dz/" name="text">' + value.text + '</a>');
+                        }
                         num++;
                     });
                 }, 'json');
@@ -87,7 +91,7 @@
             file.previewElement.appendChild(input);
         });
         myDropzone.on("sending", function (file, xhr, formData) {
-            formData.append("text", $(file.previewElement).find('input').val()); 
+            formData.append("text", $(file.previewElement).find('input').val());
         });
 
         // Update the total progress bar
@@ -105,7 +109,7 @@
         // Hide the total progress bar when nothing's uploading anymore
         myDropzone.on("queuecomplete", function (progress) {
             document.querySelector("#total-progress").style.opacity = "0";
-//            location.reload();
+            location.reload();
         });
 
         myDropzone.on("removedfile", function (file) {

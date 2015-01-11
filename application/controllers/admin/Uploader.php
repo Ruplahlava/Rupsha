@@ -234,9 +234,14 @@ class Uploader extends CI_Controller
      * 
      * @param int $id_album
      */
-    public function change_text_dz($id_album)
+    public function change_text_dz()
     {
-        
+        $this->load->helper('string');
+        $foto_update['text'] = quotes_to_entities(htmlspecialchars($this->input->post('value')));
+        $id_foto = $this->input->post('pk');
+        $foto = $this->foto->get_photo($id_foto);
+        $this->authentication->is_owner($foto[0]->id_album);
+        $this->foto->update_photo($id_foto,$foto_update);
     }
 
 }
