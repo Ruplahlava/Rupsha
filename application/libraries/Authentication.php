@@ -42,11 +42,10 @@ class Authentication
     public function is_owner($id_album)
     {
         $album = $this->ci->foto->get_album($this->get_user_id(), $id_album);
-        $result = $album[0]->id_user === $this->get_user_id() ? true : false;
-        if(FALSE === $result){
-            die('Unauthorised');
+        if (!empty($album) && $album[0]->id_user === $this->get_user_id()) {
+            return true;
         }
-        return true;
+        die('Unauthorised');
     }
 
     /**
