@@ -1,1 +1,10 @@
 /*user style*/
+#previews div{
+    border: none;    
+}
+.dz-text-description{
+    border: none!important;
+    width: 200px;
+    max-height: 150px;
+    overflow: hidden;
+}

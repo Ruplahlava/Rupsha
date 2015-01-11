@@ -37,7 +37,7 @@
         display: block;
     }
     .dz-image-preview .progress{
-        /*display: none;*/
+        display: none;
     }
 </style>
 
@@ -67,9 +67,9 @@
                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>/" + value.name);
                         var previewContainer = $(thisDropzone.previewsContainer.children[num]);
                         if (value.text == "") {
-                            previewContainer.append('<a href="#" class="xeditable pull-right text-muted" data-type="text" data-pk="' + value.id + '" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text_dz/" name="text">Empty description</a>');
+                            previewContainer.append('<div class="dz-text-description pull-right"><h4>Description</h4><a href="#" class="xeditable text-muted" data-type="text" data-pk="' + value.id + '" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text_dz/" name="text">Empty description</a></div>');
                         } else {
-                            previewContainer.append('<a href="#" class="xeditable pull-right" data-type="text" data-pk="' + value.id + '" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text_dz/" name="text">' + value.text + '</a>');
+                            previewContainer.append('<div class="dz-text-description pull-right"><h4>Description</h4><a href="#" class="xeditable" data-type="text" data-pk="' + value.id + '" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text_dz/" name="text">' + value.text + '</a></div>');
                         }
                         num++;
                     });
@@ -82,13 +82,14 @@
 
         myDropzone.on("addedfile", function (file) {
             // Hookup the start button
+            $(file.previewElement).find('.dz-image-preview .progress').css('display', "inline");
             $(file.previewElement).find('.delete').css('display', "none");
             $(file.previewElement).find('.cancel').css('display', "inline");
             file.previewElement.querySelector(".start").onclick = function () {
                 myDropzone.enqueueFile(file);
             };
-            var input = Dropzone.createElement('<input type="text" name="' + file.name + '" value="" />');
-            file.previewElement.appendChild(input);
+            var input = Dropzone.createElement('<input class="form-control" type="text" name="' + file.name + '" value="" placeholder="Description">');
+            $(file.previewElement).append('<div class="dz-text-description pull-right"><h4>Description</h4><input type="text" name="' + file.name + '" value="" class="form-control"></div>');
         });
         myDropzone.on("sending", function (file, xhr, formData) {
             formData.append("text", $(file.previewElement).find('input').val());
