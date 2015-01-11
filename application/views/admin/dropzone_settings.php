@@ -66,7 +66,7 @@
                         thisDropzone.options.addedfile.call(thisDropzone, mockFile);
                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>/" + value.name);
                         var previewContainer = $(thisDropzone.previewsContainer.children[num]);
-                        previewContainer.append('<input type="text" name="" value="" class="pull-right">');
+                        previewContainer.append('<input type="text" name="text" value="" class="pull-right">');
                         num++;
                     });
                 }, 'json');
@@ -85,6 +85,9 @@
             var input = Dropzone.createElement('<input type="text" name="' + file.name + '" value="" />');
             file.previewElement.appendChild(input);
         });
+        myDropzone.on("sending", function (file, xhr, formData) {
+            formData.append("text", $(file.previewElement).find('input').val()); 
+        });
 
         // Update the total progress bar
         myDropzone.on("totaluploadprogress", function (progress) {
@@ -101,7 +104,7 @@
         // Hide the total progress bar when nothing's uploading anymore
         myDropzone.on("queuecomplete", function (progress) {
             document.querySelector("#total-progress").style.opacity = "0";
-            location.reload();
+//            location.reload();
         });
 
         myDropzone.on("removedfile", function (file) {

@@ -105,8 +105,7 @@ class Uploader extends CI_Controller
         chmod($picture_data['full_path'], 0700);
         $foto['name']      = $picture_data['raw_name'];
         $foto['extension'] = $picture_data['file_ext'];
-//        TBD
-//        $foto['text']=  $this->input->post('text');
+        $foto['text']=  $this->input->post('text');
         $this->foto->add_photo($foto, $this->uri->segment(4));
         return $picture_data;
     }
