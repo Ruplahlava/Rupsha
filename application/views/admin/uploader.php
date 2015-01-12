@@ -1,7 +1,17 @@
 <?php $this->load->view('admin/htmlheader'); ?>
 <?php $this->load->view('admin/header'); ?>
 <div class="row">
-    <h2><?= $album[0]->name ?></h2>        
+    <h2><a href="#" class="header-xeditable" data-type="text" data-pk="<?= $album[0]->id ?>"  data-placeholder="Required" data-type="text" data-url="<?= base_url() ?>admin/uploader/alter_album/name/<?= $album[0]->id ?>" name="header"><?= $album[0]->name ?></a></h2>        
+</div>
+<div class="row">
+    <dl class="dl-horizontal">
+        <dt>Date</dt>
+        <dd><a href="#" data-type="date" data-value="<?= substr($album[0]->date,0,10) ?>" data-format="YYYY-MM-DD" data-viewformat="DD.MM.YYYY" data-pk="<?= $album[0]->id ?>" data-title="Select Date" class="date-xeditable"><?= substr($album[0]->date,0,10) ?></a></dd>
+        <dt>Location</dt>
+        <dd><a href="#" class="location-xeditable" data-type="text" data-pk="<?= $album[0]->id ?>"  data-placeholder="Required" data-type="text" data-url="<?= base_url() ?>admin/uploader/alter_album/location/<?= $album[0]->id ?>" name="place"><?= $album[0]->place ?></a></dd>
+        <dt>Text</dt>
+        <dd><a href="#" class="text-xeditable" data-type="textarea" data-pk="<?= $album[0]->id ?>"  data-placeholder="Required" data-type="text" data-url="<?= base_url() ?>admin/uploader/alter_album/text/<?= $album[0]->id ?>" name="place"><?= $album[0]->text ?></a></dd>
+    </dl>     
 </div>
 <div class="row">
     <div class="col-lg-6">

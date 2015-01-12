@@ -15,11 +15,27 @@ $(function () {
         $('.btn-delete').toggleClass("disabled");
     });
     // editables 
-    $.fn.editable.defaults.mode = 'popup';  
-    $.fn.editable.defaults.emptytext = 'Empty description';  
-    $.fn.editable.defaults.emptyclass = 'text-muted';  
+    $.fn.editable.defaults.mode = 'popup';
+    $.fn.editable.defaults.emptytext = 'Empty description';
+    $.fn.editable.defaults.emptyclass = 'text-muted';
     $('#previews').editable({
         selector: '.xeditable'
     });
-    
+    $('.header-xeditable').editable({
+        validate: function (value) {
+            if ($.trim(value) == '')
+                return 'This field is required';
+        },
+        placement: 'right'
+    });
+    $('.date-xeditable').editable({
+        placement: 'right'
+    });
+    $('.location-xeditable').editable({
+        placement: 'right'
+    });
+    $('.text-xeditable').editable({
+        placement: 'right'
+    });
+
 });

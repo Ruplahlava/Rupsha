@@ -62,6 +62,7 @@ class Uploader extends CI_Controller
                 $this->data['id_album'] = $this->uri->segment(4);
                 $this->data['user']     = $this->authentication->get_user_login();
                 $this->data['album']    = $this->foto->get_album($this->authentication->get_user_id(), $this->uri->segment(4));
+                $this->data['album_xeditable'] =
                 $this->load->view(self::UPLOADER_VIEW, $this->data);
             }
         }
@@ -242,6 +243,25 @@ class Uploader extends CI_Controller
         $foto = $this->foto->get_photo($id_foto);
         $this->authentication->is_owner($foto[0]->id_album);
         $this->foto->update_photo($id_foto,$foto_update);
+    }
+    
+    /**
+     * 
+     * @param int $id
+     * @param string $what
+     */
+    public function alter_album($id,$what)
+    {
+        
+    }
+    
+    /**
+     * 
+     * @param object $album
+     */
+    public function _prep_album_xeditable($album)
+    {
+        
     }
 
 }
