@@ -59,10 +59,10 @@ class Uploader extends CI_Controller
                 json_encode(array('name' => $picture_data['raw_name'], 'size' => $picture_data['full_path']));
             } else {
                 // Zobrazeni uploaderu     
-                $this->data['id_album'] = $this->uri->segment(4);
-                $this->data['user']     = $this->authentication->get_user_login();
-                $this->data['album']    = $this->foto->get_album($this->authentication->get_user_id(), $this->uri->segment(4));
-                $this->data['album_xeditable'] =
+                $this->data['id_album']        = $this->uri->segment(4);
+                $this->data['user']            = $this->authentication->get_user_login();
+                $this->data['album']           = $this->foto->get_album($this->authentication->get_user_id(), $this->uri->segment(4));
+                $this->data['album_xeditable'] = $this->_prep_album_xeditable($this->data['album'][0]);
                 $this->load->view(self::UPLOADER_VIEW, $this->data);
             }
         }
@@ -106,7 +106,7 @@ class Uploader extends CI_Controller
         chmod($picture_data['full_path'], 0700);
         $foto['name']      = $picture_data['raw_name'];
         $foto['extension'] = $picture_data['file_ext'];
-        $foto['text']=  $this->input->post('text');
+        $foto['text']      = $this->input->post('text');
         $this->foto->add_photo($foto, $this->uri->segment(4));
         return $picture_data;
     }
@@ -192,7 +192,7 @@ class Uploader extends CI_Controller
             $photo['name'] = $value->name . '_thumb' . $value->extension;
             $photo['size'] = filesize('./img/user/' . $this->authentication->get_user_login() . '/' . $id_album . '/' . $value->name . '_wm' . $value->extension);
             $photo['text'] = $value->text;
-            $photo['id'] = $value->id;
+            $photo['id']   = $value->id;
             $result[]      = $photo;
         }
         echo json_encode($result);
@@ -230,7 +230,7 @@ class Uploader extends CI_Controller
         $this->foto->delete_album($id);
         redirect(base_url() . 'admin/uploader/upload');
     }
-    
+
     /**
      * 
      * @param int $id_album
@@ -239,29 +239,55 @@ class Uploader extends CI_Controller
     {
         $this->load->helper('string');
         $foto_update['text'] = quotes_to_entities(htmlspecialchars($this->input->post('value')));
-        $id_foto = $this->input->post('pk');
-        $foto = $this->foto->get_photo($id_foto);
+        $id_foto             = $this->input->post('pk');
+        $foto                = $this->foto->get_photo($id_foto);
         $this->authentication->is_owner($foto[0]->id_album);
-        $this->foto->update_photo($id_foto,$foto_update);
+        $this->foto->update_photo($id_foto, $foto_update);
     }
-    
+
     /**
      * 
      * @param int $id
      * @param string $what
      */
-    public function alter_album($id,$what)
+    public function alter_album($id, $what)
     {
-        
+        $this->authentication->is_owner($id);
+        switch ($what) {
+            case 'date':
+                $datetime      = DateTime::createFromFormat('Y-m-d', $this->input->post('value'));
+                $data['date']   = $datetime->format('Y-m-d h:m:s');
+                break;
+            case 'location':
+                $data['place'] = $this->input->post('value');
+                break;
+            case 'text':
+                $data['text']  = $this->input->post('value');
+                break;
+            case 'name':
+                $data['name']  = $this->input->post('value');
+                break;
+            default:
+                die('Not acceptable value');
+        }
+        $this->foto->update_album($id, $data);
     }
-    
+
     /**
      * 
      * @param object $album
      */
     public function _prep_album_xeditable($album)
     {
-        
+        // Empty value
+        foreach ($album as $key => $value) {
+            if (empty($value)) {
+                $album->$key = 'Empty';
+            }
+        }
+        $datetime    = DateTime::createFromFormat('Y-m-d h:m:s', $album->date);
+        $album->date = $datetime->format('d.m.Y');
+        return $album;
     }
 
 }

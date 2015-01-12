@@ -79,10 +79,10 @@ class Foto extends CI_Model
         $data['id_album'] = $id;
         return $this->db->insert("foto", $data);
     }
-    
+
     public function get_photo($id)
     {
-        return $this->db->get_where('foto',array('id'=>$id))->result();
+        return $this->db->get_where('foto', array('id' => $id))->result();
     }
 
     /**
@@ -130,19 +130,35 @@ class Foto extends CI_Model
         }
         return FALSE;
     }
-    
+
     /**
      * 
      * @param int $id_photo
      * @param array $data
      * @return boolean
      */
-    public function update_photo($id_photo,$data)
+    public function update_photo($id_photo, $data)
     {
-        if(!is_array($data)){
+        if (!is_array($data)) {
             die('Second parameter must be an array!');
         }
-        if($this->db->update('foto',$data,'id='.$id_photo)){
+        if ($this->db->update('foto', $data, 'id=' . $id_photo)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 
+     * @param int $id_album
+     * @param array $data
+     */
+    public function update_album($id_album, $data)
+    {
+        if (!is_array($data)) {
+            die('Second parameter must be an array!');
+        }
+        if ($this->db->update('album', $data, 'id=' . $id_album)) {
             return true;
         }
         return false;

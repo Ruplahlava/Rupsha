@@ -16,10 +16,11 @@ $(function () {
     });
     // editables 
     $.fn.editable.defaults.mode = 'popup';
-    $.fn.editable.defaults.emptytext = 'Empty description';
+    $.fn.editable.defaults.emptytext = 'Empty';
     $.fn.editable.defaults.emptyclass = 'text-muted';
     $('#previews').editable({
-        selector: '.xeditable'
+        selector: '.xeditable',
+        emptytext: "Empty description"
     });
     $('.header-xeditable').editable({
         validate: function (value) {
@@ -29,8 +30,13 @@ $(function () {
         placement: 'right'
     });
     $('.date-xeditable').editable({
-        placement: 'right'
-    });
+        format: 'yyyy-mm-dd',    
+        viewformat: 'dd.mm.yyyy',  
+        placement: 'right',
+        datepicker: {
+                weekStart: 1
+           }
+        });
     $('.location-xeditable').editable({
         placement: 'right'
     });
