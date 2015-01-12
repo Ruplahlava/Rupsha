@@ -1,6 +1,9 @@
 <?php $this->load->view('admin/htmlheader'); ?>
 <?php $this->load->view('admin/header'); ?>
 <div class="row">
+    <h2><?= $album[0]->name ?></h2>        
+</div>
+<div class="row">
     <div class="col-lg-6">
         <div class="input-group">
             <input type="text" class="form-control input-copy" value="<?= base_url() ?><?= $album[0]->hash ?>" disabled>
