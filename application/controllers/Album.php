@@ -27,6 +27,8 @@ class Album extends CI_Controller
         if (NULL === $hash) {
             // welcome page
             $this->_welcome();
+        } elseif($hash === 'hits'){
+            $this->_hits();
         } elseif (FALSE !== $album = $this->foto->get_album('', array('hash' => $hash))) {
             // album content
             $this->_show_album($album);
@@ -34,6 +36,12 @@ class Album extends CI_Controller
             // 404
             $this->_show_error();
         }
+    }
+    public function _hits()
+    {
+        $photo_data = array('name'=>substr(preg_replace('/\\.[^.\\s]{3,4}$/', '', $this->input->post('photo')),0,-3),'id_album' =>$this->input->post('album'));
+        $photo = $this->foto->get_photo($photo_data);
+        $this->foto->increase_hits('foto',$photo[0]->id);
     }
 
     /**
