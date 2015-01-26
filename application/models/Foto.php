@@ -80,9 +80,13 @@ class Foto extends CI_Model
         return $this->db->insert("foto", $data);
     }
 
-    public function get_photo($id)
+    public function get_photo($data)
     {
-        return $this->db->get_where('foto', array('id' => $id))->result();
+        if (is_array($data)) {
+            return $this->db->get_where('foto',$data)->result();
+        } else {
+            return $this->db->get_where('foto', array('id' => $data))->result();
+        }
     }
 
     /**
