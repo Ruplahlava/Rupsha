@@ -5,6 +5,7 @@
         }
         function setHit($elements, item, data) {
             var filename = item.src.substring(item.src.lastIndexOf('/')+1);
+            $.post( "<?= base_url() ?>hits/", { album: <?= $album[0]->id ?>, photo: filename } );
         }
         $("#nanoAlbum").nanoGallery({
             thumbnailWidth: 'auto', 
