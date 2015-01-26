@@ -76,6 +76,7 @@ class Settings extends CI_Controller
                 redirect(base_url() . 'admin/settings/account/');
             } else {
                 $this->session->set_flashdata('succ', 'Password changed!');
+                $this->authentication->change_password($this->input->post('new_password'));
                 redirect(base_url() . 'admin/settings/account/');
             }
         } else {

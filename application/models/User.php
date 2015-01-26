@@ -54,5 +54,16 @@ class User extends CI_Model
         }
         return false;
     }
+    
+    /**
+     * 
+     * @param int $id
+     * @param array $data
+     * @return boolean
+     */
+    public function update_user($id,$data)
+    {
+       return $this->db->update('users',$data,'id='.$id);
+    }
 
 }

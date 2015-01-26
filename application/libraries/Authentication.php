@@ -67,6 +67,16 @@ class Authentication
     {
         return $this->ci->session->userdata('id_user');
     }
+    
+    /**
+     * 
+     * @param string $pwd
+     */
+    public function change_password($pwd)
+    {
+        $data['password'] = sha1($pwd);
+        $this->ci->user->update_user($this->get_user_id(),$data);
+    }
 
 }
 /* End of file Someclass.php */
