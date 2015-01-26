@@ -12,6 +12,7 @@ class Authentication
     {
         $this->ci              = & get_instance();
         $this->admin_classes[] = 'uploader';
+        $this->admin_classes[] = 'settings';
         $this->_check_admin_page();
     }
 
