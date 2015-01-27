@@ -39,7 +39,12 @@ class Authentication
             redirect(base_url() . "admin/login");
         }
     }
-
+    
+    /**
+     * 
+     * @param int $id_album
+     * @return boolean
+     */
     public function is_owner($id_album)
     {
         $album = $this->ci->foto->get_album($this->get_user_id(), $id_album);
@@ -47,6 +52,18 @@ class Authentication
             return true;
         }
         die('Unauthorised');
+    }
+
+    /**
+     * 
+     * @return boolean
+     */
+    public function is_admin()
+    {
+        if ('1' === $this->ci->session->userdata('admin')) {
+            return true;
+        }
+        return false;
     }
 
     /**

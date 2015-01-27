@@ -33,7 +33,9 @@ class Settings extends CI_Controller
      */
     public function users()
     {
-        
+        if (true === $this->authentication->is_admin()) {
+            
+        }
     }
 
     /**
@@ -58,7 +60,9 @@ class Settings extends CI_Controller
      */
     public function page()
     {
-        
+        if (true === $this->authentication->is_admin()) {
+            
+        }
     }
 
     /**

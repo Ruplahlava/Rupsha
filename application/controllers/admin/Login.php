@@ -32,10 +32,12 @@ class Login extends CI_Controller
         if ($this->input->post()) {
             if (TRUE === $this->_validate_login() && $this->authentication->is_logged($this->input->post('login'), $this->input->post('password'))) {
                 $this->load->model('user');
+                $user = $this->user->get_user($this->user->get_id($this->input->post('login')));
                 $userdata = array(
                     'is_logged' => true,
                     'login'     => $this->input->post('login'),
-                    'id_user'   => $this->user->get_id($this->input->post('login'))
+                    'id_user'   => $this->user->get_id($this->input->post('login')),
+                    'admin'     => $user[0]->admin
                 );
                 $this->session->set_userdata($userdata);
                 redirect(base_url() . 'admin');
