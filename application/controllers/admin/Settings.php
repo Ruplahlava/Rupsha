@@ -61,7 +61,10 @@ class Settings extends CI_Controller
     public function page()
     {
         if (true === $this->authentication->is_admin()) {
-            
+            $this->load->model('settings_model');
+            $this->data['title'] = 'Page';
+            $this->data['settings'] = $this->settings_model->get_settings();
+            $this->load->view(self::PAGE_VIEW, $this->data);
         }
     }
 
