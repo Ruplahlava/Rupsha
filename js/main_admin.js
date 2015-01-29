@@ -12,7 +12,7 @@ $(function () {
     $.fn.bootstrapSwitch.defaults.onColor = 'danger';
     $("[name='confirm-switch']").bootstrapSwitch();
     $("[name='confirm-switch']").on('switchChange.bootstrapSwitch', function (event, state) {
-        $('.btn-delete').toggleClass("disabled");
+        $(this).closest('.switch-wrap').children('.btn-delete').toggleClass("disabled");
     });
     // editables 
     $.fn.editable.defaults.mode = 'popup';

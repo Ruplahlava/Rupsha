@@ -23,7 +23,9 @@
         </div><!-- /input-group -->
     </div><!-- /.col-lg-6 -->
     <div class="col-lg-6">
-        <a type="button" class="btn btn-danger btn-delete disabled" href="<?= base_url() ?>admin/uploader/delete_album/<?= $album[0]->id ?>">Delete album</a> <input type="checkbox" name="confirm-switch">
+        <div class="switch-wrap">
+            <a type="button" class="btn btn-danger btn-delete disabled" href="<?= base_url() ?>admin/uploader/delete_album/<?= $album[0]->id ?>">Delete album</a> <input type="checkbox" name="confirm-switch">
+        </div><!-- /.col-lg-6 -->
     </div><!-- /.col-lg-6 -->
 </div>    
 <div id="actions" class="row">
