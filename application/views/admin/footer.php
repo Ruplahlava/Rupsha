@@ -9,6 +9,5 @@
 <script src="<?= base_url() ?>js/bootstrap-switch.min.js"></script>
 <script src="<?= base_url() ?>js/bootstrap-editable.js"></script>
 <script src="<?= base_url() ?>js/main_admin.js"></script>
-<?php $this->load->view('google_analytics'); ?>
 </body>
 </html>
