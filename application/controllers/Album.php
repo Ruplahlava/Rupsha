@@ -16,6 +16,9 @@ class Album extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('settings_model');
+        $this->data['settings'] = $this->settings_model->get_page_settings();
+        
     }
 
     /**
