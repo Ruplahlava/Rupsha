@@ -1,4 +1,7 @@
 /*user style*/
+body { 
+    padding-bottom: 70px; 
+}
 #previews div{
     border: none;    
 }
@@ -7,4 +10,15 @@
     width: 200px;
     max-height: 150px;
     overflow: hidden;
+}
+.center {
+    text-align: center; 
+    margin-left: auto; 
+    margin-right: auto; 
+    margin-bottom: auto; 
+    margin-top: auto;
+
+}
+footer{
+    background-color: white;
 }
