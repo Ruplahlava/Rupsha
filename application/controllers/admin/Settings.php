@@ -18,6 +18,7 @@ class Settings extends CI_Controller
     {
         parent::__construct();
         $this->data['title'] = 'Settings';
+        $this->load->model('settings_model');
     }
 
     /**
@@ -61,9 +62,8 @@ class Settings extends CI_Controller
     public function page()
     {
         if (true === $this->authentication->is_admin()) {
-            $this->load->model('settings_model');
             $this->data['title'] = 'Page';
-            $this->data['settings'] = $this->settings_model->get_settings();
+            $this->data['settings'] = $this->settings_model->get_page_settings();
             $this->load->view(self::PAGE_VIEW, $this->data);
         }
     }
@@ -75,7 +75,7 @@ class Settings extends CI_Controller
     {
         $this->load->helper('form');
         $this->load->library('form_validation');
-        if (TRUE === $this->authentication->is_logged($this->authentication->get_user_login(), $this->input->post('old_password'))) {
+        if (true === $this->authentication->is_logged($this->authentication->get_user_login(), $this->input->post('old_password'))) {
             $this->form_validation->set_rules('new_password', 'Password', 'required|matches[match_password]');
             $this->form_validation->set_rules('match_password', 'Password', 'required|matches[new_password]');
             if ($this->form_validation->run() == FALSE) {
@@ -89,6 +89,24 @@ class Settings extends CI_Controller
         } else {
             $this->session->set_flashdata('err', 'Old password is incorrect!');
             redirect(base_url() . 'admin/settings/account/');
+        }
+    }
+    
+    public function page_set()
+    {
+        if (true === $this->authentication->is_admin()) {
+            $this->load->helper('form');
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('quality', 'Quality', 'greater_than_equal_to[0]|less_than_equal_to[100]');
+            $this->form_validation->set_rules('max_dimension', 'Quality', 'greater_than_equal_to[0]');
+            if ($this->form_validation->run() == FALSE) {
+                $this->session->set_flashdata('err', 'Please set propper values.');
+                redirect(base_url() . 'admin/settings/page/');
+            } else {
+                $this->session->set_flashdata('succ', 'Settings updated!');
+                $this->settings_model->set_page_settings($this->input->post());
+                redirect(base_url() . 'admin/settings/page/');
+            }
         }
     }
 
