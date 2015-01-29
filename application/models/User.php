@@ -40,6 +40,11 @@ class User extends CI_Model
         return false;
     }
 
+    public function get_all_users()
+    {
+        return $this->db->get_where('users', 'admin != 1')->result();
+    }
+
     /**
      * 
      * @param string $login
@@ -54,16 +59,32 @@ class User extends CI_Model
         }
         return false;
     }
-    
+
     /**
      * 
      * @param int $id
      * @param array $data
      * @return boolean
      */
-    public function update_user($id,$data)
+    public function update_user($id, $data)
     {
-       return $this->db->update('users',$data,'id='.$id);
+        return $this->db->update('users', $data, 'id=' . $id);
+    }
+
+    /**
+     * 
+     * @param int $id
+     */
+    public function delete_user($id)
+    {
+        return $this->db->delete('users', array('id' => $id));
+    }
+
+    public function add_user($login, $password)
+    {
+        $data['login']    = $login;
+        $data['password'] = sha1($login);
+        return $this->db->insert('users', $data);
     }
 
 }

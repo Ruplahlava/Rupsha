@@ -35,7 +35,10 @@ class Settings extends CI_Controller
     public function users()
     {
         if (true === $this->authentication->is_admin()) {
-            
+            $this->load->model('user');
+            $this->data['title'] = 'Users';
+            $this->data['users'] = $this->user->get_all_users();
+            $this->load->view(self::USERS_VIEW, $this->data);
         }
     }
 
@@ -62,7 +65,7 @@ class Settings extends CI_Controller
     public function page()
     {
         if (true === $this->authentication->is_admin()) {
-            $this->data['title'] = 'Page';
+            $this->data['title']    = 'Page';
             $this->data['settings'] = $this->settings_model->get_page_settings();
             $this->load->view(self::PAGE_VIEW, $this->data);
         }
@@ -91,7 +94,7 @@ class Settings extends CI_Controller
             redirect(base_url() . 'admin/settings/account/');
         }
     }
-    
+
     public function page_set()
     {
         if (true === $this->authentication->is_admin()) {
@@ -106,6 +109,39 @@ class Settings extends CI_Controller
                 $this->session->set_flashdata('succ', 'Settings updated!');
                 $this->settings_model->set_page_settings($this->input->post());
                 redirect(base_url() . 'admin/settings/page/');
+            }
+        }
+    }
+
+    /**
+     * 
+     * @param int $id
+     */
+    public function delete_user($id)
+    {
+        if (true === $this->authentication->is_admin()) {
+            $this->load->model('user');
+            $this->user->delete_user($id);
+            $this->session->set_flashdata('succ', 'User Deleted!<br>Photos and albums have to be removed manually.');
+            redirect(base_url() . 'admin/settings/users/');
+        }
+    }
+    
+    public function add_user()
+    {
+        if (true === $this->authentication->is_admin()) {
+            $this->load->helper('form');
+            $this->load->library('form_validation');
+            $this->load->model('user');
+            $this->form_validation->set_rules('login', 'login', 'required');
+            $this->form_validation->set_rules('password', 'password', 'required');
+            if ($this->form_validation->run() == FALSE) {
+                $this->session->set_flashdata('err', 'Both fields are required.');
+                redirect(base_url() . 'admin/settings/users/');
+            } else {
+                $this->session->set_flashdata('succ', 'User Created!');
+                $this->user->add_user($this->input->post('login'),$this->input->post('password'));
+                redirect(base_url() . 'admin/settings/users/');
             }
         }
     }
