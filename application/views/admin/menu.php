@@ -14,7 +14,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="<?= base_url() ?>admin/settings/account">Account</a></li>
-                    <li><a href="<?= base_url() ?>admin/settings/gallery">Gallery</a></li>
+                    <!--<li><a href="<?= base_url() ?>admin/settings/gallery">Gallery</a></li> tbd -->
                     <?php if (true === $this->authentication->is_admin()): ?>
                         <li class="divider"></li>
                         <li class="dropdown-header">Administration</li>
