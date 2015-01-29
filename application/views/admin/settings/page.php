@@ -8,19 +8,19 @@
             <div class="form-group">
                 <label for="ganal" class="col-sm-3 control-label">Google analytics</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="ganal" placeholder="Google analytics code" name="ga">
+                    <input type="text" class="form-control" id="ganal" placeholder="Google analytics code" name="ga" value="<?= $settings[0]->ga?>">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-3 control-label">Max dimension</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="inputEmail3" placeholder="Vertical or horizontal" name="max_dimension">
+                    <input type="text" class="form-control" id="inputEmail3" placeholder="Vertical or horizontal" name="max_dimension" value="<?= $settings[0]->max_dimension?>">
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputPassword3" class="col-sm-3 control-label">Quality</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="inputPassword3" placeholder="In percents" name="quality">
+                    <input type="text" class="form-control" id="inputPassword3" placeholder="In percents" name="quality" value="<?= $settings[0]->quality?>">
                 </div>
             </div>
             <div class="form-group">
