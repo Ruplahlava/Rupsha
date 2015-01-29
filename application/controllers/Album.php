@@ -52,7 +52,8 @@ class Album extends CI_Controller
      */
     public function _welcome()
     {
-        
+        $this->data['title'] = 'Rupsha - Opensource picture sharing tool';
+        $this->load->view(self::WELCOME_VIEW, $this->data);
     }
 
     /**
@@ -75,7 +76,8 @@ class Album extends CI_Controller
      */
     public function _show_error()
     {
-        
+        $this->data['title'] = 'Not found - Rupsha';
+        $this->load->view(self::ERROR_VIEW, $this->data);
     }
 
 }
