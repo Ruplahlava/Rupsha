@@ -8,8 +8,8 @@
 class Album extends CI_Controller
 {
     const ALBUM_VIEW   = 'album/album';
-    const WELCOME_VIEW = '';
-    const ERROR_VIEW   = '';
+    const WELCOME_VIEW = 'welcome';
+    const ERROR_VIEW   = '404';
 
     protected $data;
 
