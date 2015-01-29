@@ -138,8 +138,10 @@ class Uploader extends CI_Controller
      */
     public function _create_watermark($picture_data)
     {
+        $this->_image_resize($picture_data);
         $config['image_library']    = 'gd2';
         $config['source_image']     = $picture_data['full_path'];
+        $config['quality']          = 100;
         $config['wm_type']          = 'overlay';
         $config['wm_overlay_path']  = './img/wm/dnc.png'; //the overlay image
         $config['wm_opacity']       = 50;
@@ -157,6 +159,28 @@ class Uploader extends CI_Controller
         if (!$this->image_lib->watermark()) {
             print_r($this->image_lib->display_errors());
             die("Unable to watermark picture.");
+        }
+    }
+    
+    /**
+     * 
+     * @param array $picture_data
+     */
+    public function _image_resize($picture_data)
+    {
+        $this->load->model('settings_model');
+        $page_settings            = $this->settings_model->get_page_settings();
+        $config['image_library']  = 'gd2';
+        $config['source_image']   = $picture_data['full_path'];
+        $config['maintain_ratio'] = TRUE;
+        $config['width']          = $page_settings[0]->max_dimension;
+        $config['height']         = $page_settings[0]->max_dimension;
+        $config['quality']        = $page_settings[0]->quality;
+        $this->image_lib->clear();
+        $this->image_lib->initialize($config);
+        if (!$this->image_lib->resize()) {
+            print_r($this->image_lib->display_errors());
+            die("Unable to resize picture.");
         }
     }
 
