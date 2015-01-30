@@ -1,12 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 3.5.8.2
--- http://www.phpmyadmin.net
---
--- Host: wm78.wedos.net:3306
--- Generation Time: Jan 26, 2015 at 10:01 AM
--- Server version: 5.6.17
--- PHP Version: 5.4.23
-
 --
 -- Table structure for table `album`
 --
@@ -57,6 +48,18 @@ CREATE TABLE IF NOT EXISTS `foto` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `page_settings`
+--
+
+CREATE TABLE IF NOT EXISTS `page_settings` (
+  `ga` varchar(40) COLLATE utf8_czech_ci NOT NULL DEFAULT 'UA-XXXXX-X',
+  `max_dimension` int(11) NOT NULL DEFAULT '0',
+  `quality` int(11) NOT NULL DEFAULT '90'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 -- --------------------------------------------------------
 
