@@ -13,5 +13,4 @@
         <!-- By ConnerT HTML & CSS Enthusiast -->  
     </div>
   </div>
-</div>
 <?php $this->load->view('album/footer'); ?>
