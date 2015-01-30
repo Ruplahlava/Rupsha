@@ -19,6 +19,7 @@ Whole project is built using Codeigniter 3.
 - Log in and have fun! `www.examplerupsha.com/admin`
 
 #####Version
+- 0.0.4 New db version, visual upgrades
 - 0.0.3 Added some settings for page, creating users, changing password.
 - 0.0.2 First runnable version. Offers file uploading, and showing it in gallery.
 - 0.0.1 Transfer from private Bitbucket to OS Github
