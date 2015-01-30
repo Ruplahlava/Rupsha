@@ -27,10 +27,15 @@
     <div class="col-md-6">
         <h3>Delete user</h3>
         <?php foreach ($users as $user): ?>
-            <div class="form-group">
-                <div class="switch-wrap">
-                    <a type="button" class="btn btn-danger btn-delete disabled" href="<?= base_url() ?>admin/settings/delete_user/<?= $user->id ?>">Delete <?= $user->login ?></a> <input type="checkbox" name="confirm-switch"><br>
-                </div>
+            <div class="row">
+                    <div class="switch-wrap switch-wrap-users">
+                        <div class="col-md-6">
+                            <a type="button" class="btn btn-danger btn-delete disabled btn-block" href="<?= base_url() ?>admin/settings/delete_user/<?= $user->id ?>">Delete <?= $user->login ?></a>
+                        </div> 
+                        <div class="col-md-6">                        
+                            <input type="checkbox" name="confirm-switch"><br>
+                        </div>
+                    </div>
             </div>
         <?php endforeach; ?>
     </div>
