@@ -18,7 +18,6 @@ class Album extends CI_Controller
         parent::__construct();
         $this->load->model('settings_model');
         $this->data['settings'] = $this->settings_model->get_page_settings();
-        
     }
 
     /**
@@ -30,7 +29,7 @@ class Album extends CI_Controller
         if (NULL === $hash) {
             // welcome page
             $this->_welcome();
-        } elseif($hash === 'hits'){
+        } elseif ($hash === 'hits') {
             $this->_hits();
         } elseif (FALSE !== $album = $this->foto->get_album('', array('hash' => $hash))) {
             // album content
@@ -40,11 +39,12 @@ class Album extends CI_Controller
             $this->_show_error();
         }
     }
+
     public function _hits()
     {
-        $photo_data = array('name'=>substr(preg_replace('/\\.[^.\\s]{3,4}$/', '', $this->input->post('photo')),0,-3),'id_album' =>$this->input->post('album'));
-        $photo = $this->foto->get_photo($photo_data);
-        $this->foto->increase_hits('foto',$photo[0]->id);
+        $photo_data = array('name' => substr(preg_replace('/\\.[^.\\s]{3,4}$/', '', $this->input->post('photo')), 0, -3), 'id_album' => $this->input->post('album'));
+        $photo      = $this->foto->get_photo($photo_data);
+        $this->foto->increase_hits('foto', $photo[0]->id);
     }
 
     /**
@@ -78,6 +78,28 @@ class Album extends CI_Controller
     {
         $this->data['title'] = 'Not found - Rupsha';
         $this->load->view(self::ERROR_VIEW, $this->data);
+    }
+
+    /**
+     * @todo hack for json response for nanogallery
+     * @param int $id_album
+     */
+    public function nanoProvider($id_album = NULL)
+    {
+        if (!empty($id_album) and FALSE !== $album = $this->foto->get_album('', array('id' => $id_album))) {
+            $this->load->model('user');
+            $json   = array();
+            $photos = $this->foto->get_album_content($id_album);
+            $user   = $this->user->get_user($album[0]->id_user);
+            foreach ($photos as $photo) {
+                $json[]['src']         = base_url() . 'img/user/' . $user[0]->login . '/' . $id_album . '/' . $photo->name . '_wm' . $photo->extension;
+                $json[]['srct']        = base_url() . 'img/user/' . $user[0]->login . '/' . $id_album . '/' . $photo->name . '_thumb' . $photo->extension;
+                $json[]['title']       = $album[0]->name;
+                $json[]['description'] = $album[0]->text;
+                $json[]['albumID'] = $album[0]->text;
+            }
+        }
+        echo json_encode($json);
     }
 
 }

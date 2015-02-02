@@ -90,6 +90,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['admin'] = 'admin/uploader';
+$route['nanoProvider/(:any)'] = 'album/nanoProvider/$1';
 $route['admin/upload'] = 'admin/uploader/upload/';
 $route['admin/upload/(:any)'] = 'admin/uploader/upload/$1';
 $route['(:any)'] = 'album/index/$1';
