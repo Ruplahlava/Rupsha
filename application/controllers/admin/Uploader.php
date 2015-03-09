@@ -173,9 +173,11 @@ class Uploader extends CI_Controller
         $config['image_library']  = 'gd2';
         $config['source_image']   = $picture_data['full_path'];
         $config['maintain_ratio'] = TRUE;
-        $config['width']          = $page_settings[0]->max_dimension;
-        $config['height']         = $page_settings[0]->max_dimension;
-        $config['quality']        = $page_settings[0]->quality;
+        if (0 != $page_settings[0]->max_dimension) {
+            $config['width']  = $page_settings[0]->max_dimension;
+            $config['height'] = $page_settings[0]->max_dimension;
+        }
+        $config['quality'] = $page_settings[0]->quality;
         $this->image_lib->clear();
         $this->image_lib->initialize($config);
         if (!$this->image_lib->resize()) {
