@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-lg-6">
         <div class="input-group">
-            <input type="text" class="form-control input-copy" value="<?= base_url() ?><?= $album[0]->hash ?>" disabled>
+            <input type="text" class="form-control input-copy enable-copy" value="<?= base_url() ?><?= $album[0]->hash ?>" disabled>
             <span class="input-group-btn">
                 <button class="btn btn-default btn-copy" data-clipboard-text="<?= base_url() ?><?= $album[0]->hash ?>" type="button" data-toggle="popover" data-trigger="focus" data-content="Copied!">Copy</button>
             </span>

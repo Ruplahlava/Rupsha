@@ -25,3 +25,6 @@ footer{
 .switch-wrap-users{
     margin-top: 10px;
 }
+.enable-copy{
+    cursor: text!important;
+}
