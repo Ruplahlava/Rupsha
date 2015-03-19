@@ -56,7 +56,7 @@
                 $.ajax({
                     data: data,
                     type: 'POST',
-                    url: '<?= base_url()?>uploader/sort_dz'
+                    url: '<?= base_url()?>admin/uploader/sort_dz/<?= $album[0]->id ?>'
                 });
             }
         });
@@ -84,7 +84,7 @@
                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>/" + value.name);
                         var previewContainer = $(thisDropzone.previewsContainer.children[num]);
 //                        $(previewContainer).append("<input type='hidden' value='"+value.id+"'>");
-                        $(previewContainer).attr("id",value.name);
+                        $(previewContainer).attr("id",value.sort);
                         if (value.text == "") {
                             previewContainer.append('<div class="dz-text-description pull-right"><h4>Description</h4><a href="#" class="xeditable text-muted" data-type="text" data-pk="' + value.id + '" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text_dz/" name="text">Empty description</a></div>');
                         } else {

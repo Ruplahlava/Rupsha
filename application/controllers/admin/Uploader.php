@@ -219,6 +219,7 @@ class Uploader extends CI_Controller
             $photo['size'] = filesize('./img/user/' . $this->authentication->get_user_login() . '/' . $id_album . '/' . $value->name . '_wm' . $value->extension);
             $photo['text'] = $value->text;
             $photo['id']   = $value->id;
+            $photo['sort'] = $value->name.'_'.$value->id;
             $result[]      = $photo;
         }
         echo json_encode($result);
@@ -314,6 +315,25 @@ class Uploader extends CI_Controller
         $datetime    = DateTime::createFromFormat('Y-m-d h:m:s', $album->date);
         $album->date = $datetime->format('d.m.Y');
         return $album;
+    }
+    
+    /**
+     * @todo check if photos are in album
+     * @param string $param
+     */
+    public function sort_dz($id_album = null)
+    {
+        $this->authentication->is_owner($id_album);
+        $post = $this->input->post();
+        $counter = 1;
+        $sorted = array();
+        foreach ($post as $key => $value){
+            $tmpa['order'] = $counter;
+            $tmpa['id'] = $value[0];
+            $sorted[] = $tmpa;
+            $counter++;
+        }
+        $this->foto->sort_update($sorted);
     }
 
 }

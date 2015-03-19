@@ -44,6 +44,7 @@ class Foto extends CI_Model
      */
     public function get_album_content($album)
     {
+        $this->db->order_by('order ASC, id ASC');
         $album_content = $this->db->get_where('foto', array('id_album' => $album));
         if ($album_content->num_rows() !== 0) {
             return $album_content->result();
@@ -166,6 +167,15 @@ class Foto extends CI_Model
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Batch updates order of photos
+     * @param array $data
+     */
+    public function sort_update($data)
+    {
+        $this->db->update_batch('foto', $data, 'id');
     }
 
 }
