@@ -103,6 +103,7 @@
             // Hookup the start button
             $(file.previewElement).find('.dz-image-preview .progress').css('display', "inline");
             $(file.previewElement).find('.delete').css('display', "none");
+            $(file.previewElement).find('.file-row-handle').css('display', "none");
             $(file.previewElement).find('.cancel').css('display', "inline");
             file.previewElement.querySelector(".start").onclick = function () {
                 myDropzone.enqueueFile(file);
