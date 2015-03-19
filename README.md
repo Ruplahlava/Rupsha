@@ -12,6 +12,7 @@ Whole project is built using Codeigniter 3.
 - SQL server (mysql is default)
 
 ####Installation:
+- Download latest release
 - Put all data in desired server folder.
 - Edit files `/application/config/database.php` and `/application/config/config.php` - set connection to your db and `base_url` of your project.
 - Run `/sql/install.sql` on your database.
@@ -19,6 +20,7 @@ Whole project is built using Codeigniter 3.
 - Log in and have fun! `www.examplerupsha.com/admin`
 
 #####Version
+- 0.0.5 Added sorting
 - 0.0.4 New db version, visual upgrades
 - 0.0.3 Added some settings for page, creating users, changing password.
 - 0.0.2 First runnable version. Offers file uploading, and showing it in gallery.
