@@ -19,6 +19,7 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Administration</li>
                         <li><a href="<?= base_url() ?>admin/settings/page">Page</a></li>
+                        <li><a href="<?= base_url() ?>admin/settings/mainpage">Mainpage</a></li>
                         <li><a href="<?= base_url() ?>admin/settings/users">Users</a></li>
                     <?php endif; ?>
                 </ul>

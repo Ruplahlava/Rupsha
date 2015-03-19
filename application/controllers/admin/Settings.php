@@ -9,10 +9,11 @@ class Settings extends CI_Controller
 {
     protected $data;
 
-    const USERS_VIEW   = 'admin/settings/users';
-    const ACCOUNT_VIEW = 'admin/settings/account';
-    const GALLERY_VIEW = 'admin/settings/gellery';
-    const PAGE_VIEW    = 'admin/settings/page';
+    const USERS_VIEW    = 'admin/settings/users';
+    const ACCOUNT_VIEW  = 'admin/settings/account';
+    const GALLERY_VIEW  = 'admin/settings/gellery';
+    const PAGE_VIEW     = 'admin/settings/page';
+    const MAINPAGE_VIEW = 'admin/settings/mainpage';
 
     public function __construct()
     {
@@ -94,7 +95,9 @@ class Settings extends CI_Controller
             redirect(base_url() . 'admin/settings/account/');
         }
     }
-
+    /**
+     * 
+     */
     public function page_set()
     {
         if (true === $this->authentication->is_admin()) {
@@ -126,7 +129,9 @@ class Settings extends CI_Controller
             redirect(base_url() . 'admin/settings/users/');
         }
     }
-    
+    /**
+     * 
+     */
     public function add_user()
     {
         if (true === $this->authentication->is_admin()) {
@@ -143,6 +148,14 @@ class Settings extends CI_Controller
                 $this->user->add_user($this->input->post('login'),$this->input->post('password'));
                 redirect(base_url() . 'admin/settings/users/');
             }
+        }
+    }
+    
+    public function mainpage()
+    {
+        if (true === $this->authentication->is_admin()) {
+            $this->data['title']    = 'Mainpage';
+            $this->load->view(self::MAINPAGE_VIEW,$this->data);
         }
     }
 
