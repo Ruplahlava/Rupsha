@@ -61,6 +61,7 @@
         <!-- This is used as the file preview template -->
         <div>
             <span class="preview"><img data-dz-thumbnail /></span>
+            <span class="glyphicon glyphicon-sort file-row-handle" aria-hidden="true"></span>
         </div>
         <div>
             <strong class="error text-danger" data-dz-errormessage></strong>

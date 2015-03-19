@@ -43,6 +43,23 @@
 
 <script>
     $(function () {
+    // Sorting
+        $('#previews').sortable({
+            axis: 'y',
+            placeholder: 'file-row-highlight',
+            cursor: "move",
+            handle: ".file-row-handle",
+            update: function (event, ui) {
+                var data = $(this).sortable('serialize');
+                console.log(data);
+//                 POST to server using $.post or $.ajax
+                $.ajax({
+                    data: data,
+                    type: 'POST',
+                    url: '<?= base_url()?>uploader/sort_dz'
+                });
+            }
+        });
         var previewNode = document.querySelector("#template");
         previewNode.id = "";
         var previewTemplate = previewNode.parentNode.innerHTML;
@@ -66,6 +83,8 @@
                         thisDropzone.options.addedfile.call(thisDropzone, mockFile);
                         thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "<?= base_url() ?>img/user/<?= $user ?>/<?= $id_album ?>/" + value.name);
                         var previewContainer = $(thisDropzone.previewsContainer.children[num]);
+//                        $(previewContainer).append("<input type='hidden' value='"+value.id+"'>");
+                        $(previewContainer).attr("id",value.name);
                         if (value.text == "") {
                             previewContainer.append('<div class="dz-text-description pull-right"><h4>Description</h4><a href="#" class="xeditable text-muted" data-type="text" data-pk="' + value.id + '" data-type="text" data-url="<?= base_url() ?>admin/uploader/change_text_dz/" name="text">Empty description</a></div>');
                         } else {

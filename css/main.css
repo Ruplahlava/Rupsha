@@ -28,3 +28,11 @@ footer{
 .enable-copy{
     cursor: text!important;
 }
+.file-row-handle{
+    padding-left: 5px;
+    cursor: move;
+}
+.file-row-highlight{
+    display: table-row;
+    height: 163px;
+}

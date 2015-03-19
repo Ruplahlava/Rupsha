@@ -19,12 +19,14 @@
         </style>
         <link rel="stylesheet" href="<?= base_url() ?>css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="<?= base_url() ?>css/bootstrap-switch.min.css">
+        <link rel="stylesheet" href="<?= base_url() ?>js/jquery-ui.min.css">
         <link rel="stylesheet" href="<?= base_url() ?>css/main.css">
         <link rel="stylesheet" href="<?= base_url() ?>css/bootstrap-editable.css">
         <?php if (isset($login_css)): ?>
             <link rel="stylesheet" href="<?= base_url() ?>css/login.css">
         <?php endif; ?>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="<?= base_url() ?>js/jquery-ui.min.js"></script>
         <script>window.jQuery || document.write('<script src="<?= base_url() ?>js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
         <script src="<?= base_url() ?>js/dropzone.min.js"></script>
         <script src="<?= base_url() ?>js/ZeroClipboard.min.js"></script>
