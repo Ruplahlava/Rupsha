@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `foto` (
   `hits` int(11) NOT NULL,
   `extension` varchar(5) COLLATE utf8_czech_ci NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
@@ -56,10 +57,12 @@ CREATE TABLE IF NOT EXISTS `foto` (
 --
 
 CREATE TABLE IF NOT EXISTS `page_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ga` varchar(40) COLLATE utf8_czech_ci NOT NULL DEFAULT 'UA-XXXXX-X',
   `max_dimension` int(11) NOT NULL DEFAULT '0',
-  `quality` int(11) NOT NULL DEFAULT '90'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+  `quality` int(11) NOT NULL DEFAULT '90',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 -- --------------------------------------------------------
 
