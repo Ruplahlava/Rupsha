@@ -4,7 +4,7 @@ class Settings_model extends CI_Model
 {
 
     /**
-     * 
+     * @todo remove insert when installation script is finished
      * @return object
      */
     public function get_page_settings()
@@ -19,11 +19,11 @@ class Settings_model extends CI_Model
 
     /**
      * 
-     * @param array $post
+     * @param array $data
      */
-    public function set_page_settings($post)
+    public function set_page_settings($data)
     {
-       return $this->db->update('page_settings', $post, 'id=1');
+       return $this->db->update('page_settings', $data, 'id=1');
     }
 
 }

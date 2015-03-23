@@ -151,11 +151,51 @@ class Settings extends CI_Controller
         }
     }
     
+    /**
+     * 
+     */
     public function mainpage()
     {
         if (true === $this->authentication->is_admin()) {
             $this->data['title']    = 'Mainpage';
-            $this->load->view(self::MAINPAGE_VIEW,$this->data);
+            $this->data['settings'] = $this->settings_model->get_page_settings();
+            $this->load->view(self::MAINPAGE_VIEW, $this->data);
+        }
+    }
+    /**
+     * Switches mainpage on/off
+     */
+    public function mainpage_switch()
+    {
+        if (true === $this->authentication->is_admin()) {
+            $settings = $this->settings_model->get_page_settings();
+            if($settings[0]->mainpage == '1'){
+                //shuts down mainpage
+                $this->settings_model->set_page_settings(array('mainpage'=>'0'));
+            }else{
+                //enables it
+                $this->settings_model->set_page_settings(array('mainpage'=>'1'));
+            }
+        }
+    }
+    
+    /**
+     * Set data for mainpage
+     */
+    public function mainpage_set()
+    {
+        if (true === $this->authentication->is_admin()) {
+            $this->load->helper('form');
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('mainpage_style', 'style', 'required');
+            if ($this->form_validation->run() == FALSE) {
+                $this->session->set_flashdata('err', 'Ooops something went wrong!');
+                redirect(base_url() . 'admin/settings/mainpage/');
+            } else {
+                $this->settings_model->set_page_settings($this->input->post());
+                $this->session->set_flashdata('succ', 'Settings updated!');
+                redirect(base_url() . 'admin/settings/mainpage/');
+            }
         }
     }
 

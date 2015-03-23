@@ -3,7 +3,7 @@
 <div class="row"><div class="col-md-12"> 
         <?php $this->load->view('admin/settings/alert'); ?>
         <h3>Mainpage settings</h3>
-        <input type="checkbox" name="mainpage-switch">
+        <input type="checkbox" name="mainpage-switch"<?=($settings[0]->mainpage == '1' ? 'checked': '');?>>
     </div>
 </div>
 <div class="row">
@@ -12,18 +12,18 @@
             <div class="form-group">
                 <label for="ganal" class="col-sm-3 control-label">Mainpage text<small class="text-muted"> HTML enabled</small></label>
                 <div class="col-sm-9">
-                    <textarea class="form-control" rows="6" name="mainpagetext"></textarea>
+                    <textarea class="form-control" rows="6" name="mainpage_text"><?=$settings[0]->mainpage_text?></textarea>
                 </div>
             </div>
             <div class="radio">
                 <label>
-                    <input type="radio" name="mainpagestyle" id="optionsRadios1" value="1">
+                    <input type="radio" name="mainpage_style" id="optionsRadios1" value="1" <?=($settings[0]->mainpage_style == '1' ? 'checked': '');?>>
                     Boxes with album names
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    <input type="radio" name="mainpagestyle" id="optionsRadios2" value="2">
+                    <input type="radio" name="mainpage_style" id="optionsRadios2" value="2" <?=($settings[0]->mainpage_style == '2' ? 'checked': '');?>>
                     Each album on line with name and text
                 </label>
             </div>
