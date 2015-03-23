@@ -1,35 +1,35 @@
 <?php $this->load->view('admin/htmlheader'); ?>
 <?php $this->load->view('admin/header'); ?>
-<div class="row">
-    <?php $this->load->view('admin/settings/alert'); ?>
-    <h3>Mainpage settings</h3>
-    
-    <div class="col-md-6">   
-        <br>
+<div class="row"><div class="col-md-12"> 
+        <?php $this->load->view('admin/settings/alert'); ?>
+        <h3>Mainpage settings</h3>
         <input type="checkbox" name="mainpage-switch">
-        <form class="form-horizontal mainpage" method="post" action="<?= base_url()?>admin/settings/mainpage_set">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">   
+        <form class="form-horizontal mainpage" method="post" action="<?= base_url() ?>admin/settings/mainpage_set">
             <div class="form-group">
-                <label for="ganal" class="col-sm-3 control-label">Google analytics</label>
+                <label for="ganal" class="col-sm-3 control-label">Mainpage text<small class="text-muted"> HTML enabled</small></label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="ganal" placeholder="Google analytics code" name="ga" value="">
+                    <textarea class="form-control" rows="6" name="mainpagetext"></textarea>
                 </div>
             </div>
-            <h5>Picture settings</h5>
-            <div class="form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">Max dimension</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" id="inputEmail3" placeholder="Vertical or horizontal" name="max_dimension" value="">
-                </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="mainpagestyle" id="optionsRadios1" value="1">
+                    Boxes with album names
+                </label>
             </div>
-            <div class="form-group">
-                <label for="inputPassword3" class="col-sm-3 control-label">Quality</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" id="inputPassword3" placeholder="In percents" name="quality" value="">
-                </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="mainpagestyle" id="optionsRadios2" value="2">
+                    Each album on line with name and text
+                </label>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
-                    <button type="submit" class="btn btn-default">Change values</button>
+                    <button type="submit" class="btn btn-default submit-mainpage">Change values</button>
                 </div>
             </div>
         </form>
@@ -37,12 +37,9 @@
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-body">
-                Some text probably
+                Here you can set up your mainpage, or completely disable it - blank page will be shown.<br>
             </div>
         </div>
     </div>
 </div>
-<!--vypnut zapnout mainpage-->
-<!--style mainpage-->
-<!--editor popisu stranky-->
 <?php $this->load->view('admin/footer'); ?>

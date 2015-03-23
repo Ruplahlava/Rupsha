@@ -17,9 +17,12 @@ $(function () {
     });
     $("[name='mainpage-switch']").bootstrapSwitch();
     $("[name='mainpage-switch']").on('switchChange.bootstrapSwitch', function (event, state) {
-        $('.mainpage').find('input').prop('disabled', function (idx, oldProp) {
+        $('.mainpage').find('input,textarea').prop('disabled', function (idx, oldProp) {
             return !oldProp;
         });
+        $('.submit-mainpage').toggleClass('disabled');
+        var address = $(location).attr('href').slice(0,-8)+'mainpage_switch';
+        $.post(address);
     });
     
     // editables 
