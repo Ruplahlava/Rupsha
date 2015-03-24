@@ -163,27 +163,30 @@ class Uploader extends CI_Controller
     }
     
     /**
-     * 
+     * Resizes picture if it is bigger then desired
      * @param array $picture_data
      */
     public function _image_resize($picture_data)
     {
         $this->load->model('settings_model');
-        $page_settings            = $this->settings_model->get_page_settings();
-        $config['image_library']  = 'gd2';
-        $config['source_image']   = $picture_data['full_path'];
-        $config['maintain_ratio'] = TRUE;
-        if (0 != $page_settings[0]->max_dimension) {
-            $config['width']  = $page_settings[0]->max_dimension;
-            $config['height'] = $page_settings[0]->max_dimension;
+        $page_settings = $this->settings_model->get_page_settings();
+        if($page_settings[0]->max_dimension < $picture_data['image_width'] || $page_settings[0]->max_dimension < $picture_data['image_height']) {
+            $config['image_library']  = 'gd2';
+            $config['source_image']   = $picture_data['full_path'];
+            $config['maintain_ratio'] = TRUE;
+            if (0 != $page_settings[0]->max_dimension) {
+                $config['width']  = $page_settings[0]->max_dimension;
+                $config['height'] = $page_settings[0]->max_dimension;
+            }
+            $config['quality'] = $page_settings[0]->quality;
+            $this->image_lib->clear();
+            $this->image_lib->initialize($config);
+            if (!$this->image_lib->resize()) {
+                print_r($this->image_lib->display_errors());
+                die("Unable to resize picture.");
+            }
         }
-        $config['quality'] = $page_settings[0]->quality;
-        $this->image_lib->clear();
-        $this->image_lib->initialize($config);
-        if (!$this->image_lib->resize()) {
-            print_r($this->image_lib->display_errors());
-            die("Unable to resize picture.");
-        }
+        return true;
     }
 
     /**
