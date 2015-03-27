@@ -177,5 +177,20 @@ class Foto extends CI_Model
     {
         $this->db->update_batch('foto', $data, 'id');
     }
+    
+    public function getOverviewData()
+    {
+        $overview = array();
+        $dbAlbum = $this->db->get('album');
+        $result = $dbAlbum->result();
+        foreach ($result as $album){
+//            todo fix row names
+            $main_photo = $this->db->query('SELECT * FROM foto WHERE id_album='.$album->id.' order by `order` asc limit 1');
+            if($main_photo->num_rows() ==! 0){
+                $overview[] = array_merge($main_photo->result_array(),(array)$album);
+            }
+        }
+        return (object)$overview;
+    }
 
 }
