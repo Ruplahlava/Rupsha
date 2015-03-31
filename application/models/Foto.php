@@ -178,16 +178,20 @@ class Foto extends CI_Model
         $this->db->update_batch('foto', $data, 'id');
     }
     
+    /**
+     * Provides pictures for mainpage
+     * 
+     * @return type
+     */
     public function getOverviewData()
     {
         $overview = array();
-        $dbAlbum = $this->db->get('album');
+        $dbAlbum = $this->db->get_where('album', array('hidden'=>0));
         $result = $dbAlbum->result();
         foreach ($result as $album){
-//            todo fix row names
-            $main_photo = $this->db->query('SELECT * FROM foto WHERE id_album='.$album->id.' order by `order` asc limit 1');
+            $main_photo = $this->db->query('SELECT name as fname,extension FROM foto WHERE id_album='.$album->id.' order by `order` asc limit 1');
             if($main_photo->num_rows() ==! 0){
-                $overview[] = array_merge($main_photo->result_array(),(array)$album);
+                $overview[] = array_merge($main_photo->result_array()[0],(array)$album);
             }
         }
         return (object)$overview;
