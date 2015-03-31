@@ -1,0 +1,1 @@
+ALTER TABLE  `album` ADD  `hidden` INT NOT NULL DEFAULT  '0';
