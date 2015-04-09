@@ -186,15 +186,16 @@ class Foto extends CI_Model
     public function getOverviewData()
     {
         $overview = array();
-        $dbAlbum = $this->db->get_where('album', array('hidden'=>0));
+//        todo rename columns
+        $dbAlbum = $this->db->query('SELECT album.id as id, name, text, place, login FROM `album` JOIN users ON (album.id_user = users.id) WHERE hidden = 0');
         $result = $dbAlbum->result();
         foreach ($result as $album){
-            $main_photo = $this->db->query('SELECT name as fname,extension FROM foto WHERE id_album='.$album->id.' order by `order` asc limit 1');
+            $main_photo = $this->db->query('SELECT name as fname,extension FROM foto WHERE id_album='.$album->id.' order by `order`, id asc limit 1');
             if($main_photo->num_rows() ==! 0){
                 $overview[] = array_merge($main_photo->result_array()[0],(array)$album);
             }
         }
-        return (object)$overview;
+        return $overview;
     }
 
 }
