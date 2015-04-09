@@ -36,3 +36,6 @@ footer{
     display: table-row;
     height: 163px;
 }
+.album-text{
+    margin-top: 20px;
+}
