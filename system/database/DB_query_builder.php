@@ -2,11 +2,11 @@
 /**
  * CodeIgniter
  *
- * An open source application development framework for PHP 5.2.4 or newer
+ * An open source application development framework for PHP
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	http://codeigniter.com
  * @since	Version 1.0.0
@@ -1353,9 +1353,10 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	 * returned by an Query Builder query.
 	 *
 	 * @param	string
+	 * @param	bool	the reset clause
 	 * @return	int
 	 */
-	public function count_all_results($table = '')
+	public function count_all_results($table = '', $reset = TRUE)
 	{
 		if ($table !== '')
 		{
@@ -1366,7 +1367,11 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		$result = ($this->qb_distinct === TRUE)
 			? $this->query($this->_count_string.$this->protect_identifiers('numrows')."\nFROM (\n".$this->_compile_select()."\n) CI_count_all_results")
 			: $this->query($this->_compile_select($this->_count_string.$this->protect_identifiers('numrows')));
-		$this->_reset_select();
+
+		if ($reset === TRUE)
+		{
+			$this->_reset_select();
+		}
 
 		if ($result->num_rows() === 0)
 		{
@@ -1699,7 +1704,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	 * Groups tables in FROM clauses if needed, so there is no confusion
 	 * about operator precedence.
 	 *
-	 * Note: This is only used (and overriden) by MySQL and CUBRID.
+	 * Note: This is only used (and overridden) by MySQL and CUBRID.
 	 *
 	 * @return	string
 	 */
@@ -2723,6 +2728,3 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	}
 
 }
-
-/* End of file DB_query_builder.php */
-/* Location: ./system/database/DB_query_builder.php */
