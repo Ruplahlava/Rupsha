@@ -1,7 +1,7 @@
 <?php $this->load->view('admin/htmlheader'); ?>
 <?php $this->load->view('admin/header'); ?>
 <div class="row">
-    <?php $this->load->view('admin/settings/alert'); ?>
+    <?php $this->load->view('alert'); ?>
     <div class="col-md-6">
         <h3>Password change</h3>
         <form class="form-horizontal" method="post" action="<?= base_url()?>admin/settings/pwd_change">

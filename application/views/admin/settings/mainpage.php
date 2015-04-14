@@ -1,7 +1,7 @@
 <?php $this->load->view('admin/htmlheader'); ?>
 <?php $this->load->view('admin/header'); ?>
 <div class="row"><div class="col-md-12"> 
-        <?php $this->load->view('admin/settings/alert'); ?>
+        <?php $this->load->view('alert'); ?>
         <h3>Mainpage settings</h3>
         <input type="checkbox" name="mainpage-switch"<?=($settings[0]->mainpage == '1' ? 'checked': '');?>>
     </div>
