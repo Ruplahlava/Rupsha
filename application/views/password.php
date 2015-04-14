@@ -2,6 +2,8 @@
 <?php $this->load->view('header'); ?>
 <div class="row row-centered">
     <div class="col-centered col-md-6">
+<?php $this->load->view('alert'); ?>
+        
         <form class="form-inline" action="<?= current_url() ?>" method="post">
             <div class="form-group">
                 <label for="inputPWD">Password</label>
@@ -12,4 +14,4 @@
     </div>
 </div>
 </div>
-<?php $this->load->view('album/footer'); ?>
+<?php $this->load->view('footer'); ?>

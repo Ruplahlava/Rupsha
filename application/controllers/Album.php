@@ -75,6 +75,9 @@ class Album extends CI_Controller
         $this->data['album'] = $album;
         $this->data['title'] = $album[0]->name . ' - Rupsha';
         $this->data['user']  = $this->user->get_user($album[0]->id_user);
+        if($this->input->post('album_password')){
+            $this->authentication->set_stored_password($this->input->post('album_password'));
+        }
         if($this->check_lock($album)) {
             $this->data['photo'] = $this->foto->get_album_content($album[0]->id);
             $this->foto->increase_hits('album', $album[0]->id);
@@ -125,6 +128,9 @@ class Album extends CI_Controller
         $stored_password = $this->authentication->get_stored_password();
         if($password == '' || $password === $stored_password){
             return true;
+        }
+        if ($this->input->post('album_password')) {
+            $this->session->set_flashdata('err', 'Incorrect password');
         }
         return false;
     }

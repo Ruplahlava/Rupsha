@@ -101,7 +101,7 @@ class Authentication
      */
     public function set_stored_password($password)
     {
-        
+        $this->ci->session->set_userdata(array('stored_password'=>$password));
     }
 
     /**
@@ -109,7 +109,7 @@ class Authentication
      */
     public function get_stored_password()
     {
-        
+        return $this->ci->session->userdata('stored_password');
     }
 
 }
