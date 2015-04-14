@@ -94,6 +94,23 @@ class Authentication
         $data['password'] = sha1($pwd);
         $this->ci->user->update_user($this->get_user_id(),$data);
     }
+    
+    /**
+     * 
+     * @param string $password
+     */
+    public function set_stored_password($password)
+    {
+        
+    }
+
+    /**
+     * 
+     */
+    public function get_stored_password()
+    {
+        
+    }
 
 }
-/* End of file Someclass.php */
+/* End of file Authentication.php */

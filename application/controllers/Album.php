@@ -11,6 +11,7 @@ class Album extends CI_Controller
     const WELCOME_BOX_VIEW = 'welcome_box';
     const WELCOME_ROWS_VIEW = 'welcome_rows';
     const ERROR_VIEW   = '404';
+    const PASSWORD_VIEW   = 'password';
 
     protected $data;
 
@@ -72,11 +73,15 @@ class Album extends CI_Controller
     {
         $this->load->model('user');
         $this->data['album'] = $album;
-        $this->data['photo'] = $this->foto->get_album_content($album[0]->id);
-        $this->data['user']  = $this->user->get_user($album[0]->id_user);
         $this->data['title'] = $album[0]->name . ' - Rupsha';
-        $this->foto->increase_hits('album', $album[0]->id);
-        $this->load->view(self::ALBUM_VIEW, $this->data);
+        $this->data['user']  = $this->user->get_user($album[0]->id_user);
+        if($this->check_lock($album)) {
+            $this->data['photo'] = $this->foto->get_album_content($album[0]->id);
+            $this->foto->increase_hits('album', $album[0]->id);
+            $this->load->view(self::ALBUM_VIEW, $this->data);
+        }else{
+            $this->load->view(self::PASSWORD_VIEW, $this->data);
+        }
     }
 
     /**
@@ -110,4 +115,17 @@ class Album extends CI_Controller
         echo json_encode($json);
     }
 
+    /**
+     * 
+     * @param object $album
+     */
+    public function check_lock($album)
+    {
+        $password = $album[0]->password;
+        $stored_password = $this->authentication->get_stored_password();
+        if($password == '' || $password === $stored_password){
+            return true;
+        }
+        return false;
+    }
 }
