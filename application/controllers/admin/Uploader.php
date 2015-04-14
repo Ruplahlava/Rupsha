@@ -285,17 +285,20 @@ class Uploader extends CI_Controller
         $this->authentication->is_owner($id);
         switch ($what) {
             case 'date':
-                $datetime      = DateTime::createFromFormat('Y-m-d', $this->input->post('value'));
-                $data['date']   = $datetime->format('Y-m-d h:m:s');
+                $datetime         = DateTime::createFromFormat('Y-m-d', $this->input->post('value'));
+                $data['date']     = $datetime->format('Y-m-d h:m:s');
                 break;
             case 'location':
-                $data['place'] = $this->input->post('value');
+                $data['place']    = $this->input->post('value');
                 break;
             case 'text':
-                $data['text']  = $this->input->post('value');
+                $data['text']     = $this->input->post('value');
                 break;
             case 'name':
-                $data['name']  = $this->input->post('value');
+                $data['name']     = $this->input->post('value');
+                break;
+            case 'password':
+                $data['password'] = $this->input->post('value');
                 break;
             default:
                 die('Not acceptable value');
@@ -309,12 +312,6 @@ class Uploader extends CI_Controller
      */
     public function _prep_album_xeditable($album)
     {
-        // Empty value
-        foreach ($album as $key => $value) {
-            if (empty($value)) {
-                $album->$key = 'Empty';
-            }
-        }
         $datetime    = DateTime::createFromFormat('Y-m-d h:m:s', $album->date);
         $album->date = $datetime->format('d.m.Y');
         return $album;
@@ -337,6 +334,24 @@ class Uploader extends CI_Controller
             $counter++;
         }
         $this->foto->sort_update($sorted);
+    }
+    
+    /**
+     * 
+     * @param int $id_album
+     */
+    public function hidden_switch($id_album = null)
+    {
+        $this->authentication->is_owner($id_album);
+        if ($id_album !== null)
+            $album = $this->foto->get_album($this->authentication->get_user_id(),$id_album);
+        if ($album[0]->hidden == '1') {
+            //show on mainpage
+            $this->foto->update_album($id_album,array('hidden' => '0'));
+        } else {
+            //hide it
+            $this->foto->update_album($id_album,array('hidden' => '1'));
+        }
     }
 
 }

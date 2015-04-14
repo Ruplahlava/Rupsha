@@ -11,7 +11,12 @@
         <dd><a href="#" class="location-xeditable" data-type="text" data-pk="<?= $album_xeditable->id ?>"  data-type="text" data-url="<?= base_url() ?>admin/uploader/alter_album/<?= $album_xeditable->id ?>/location/" name="place"><?= $album_xeditable->place ?></a></dd>
         <dt>Text</dt>
         <dd><a href="#" class="text-xeditable" data-type="textarea" data-pk="<?= $album_xeditable->id ?>"  data-type="text" data-url="<?= base_url() ?>admin/uploader/alter_album/<?= $album_xeditable->id ?>/text/" name="place"><?= $album_xeditable->text ?></a></dd>
+        <dt>Password</dt>
+        <dd><a href="#" class="text-xeditable" data-type="text" data-pk="<?= $album_xeditable->id ?>"  data-type="text" data-url="<?= base_url() ?>admin/uploader/alter_album/<?= $album_xeditable->id ?>/password/" name="place"><?= $album_xeditable->password ?></a></dd>
+        <dt>Show on mainpage</dt>
+        <dd><input type="checkbox" name="hidden-switch" <?= $album[0]->hidden == 0 ? 'checked' : '' ?> ></dd>
     </dl>     
+</dl>     
 </div>
 <div class="row">
     <div class="col-lg-6">

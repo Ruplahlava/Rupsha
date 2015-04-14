@@ -24,7 +24,12 @@ $(function () {
         var address = $(location).attr('href').slice(0,-8)+'mainpage_switch';
         $.post(address);
     });
-    
+    $("[name='hidden-switch']").bootstrapSwitch();
+    $("[name='hidden-switch']").on('switchChange.bootstrapSwitch', function (event, state) {
+        var address = $(location).attr('href').replace('/upload/','/hidden_switch/');
+        console.log(address);
+        $.post(address);
+    });
     // editables 
     $.fn.editable.defaults.mode = 'popup';
     $.fn.editable.defaults.emptytext = 'Empty';
