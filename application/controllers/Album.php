@@ -54,6 +54,7 @@ class Album extends CI_Controller
     {
         $this->data['title'] = 'Rupsha - Opensource picture sharing tool';
         $this->data['overview_array'] = $this->foto->getOverviewData();
+//        print_r($this->data['overview_array']);
         $this->load->view(self::WELCOME_VIEW, $this->data);
     }
 

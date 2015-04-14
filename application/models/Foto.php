@@ -187,7 +187,7 @@ class Foto extends CI_Model
     {
         $overview = array();
 //        todo rename columns
-        $dbAlbum = $this->db->query('SELECT album.id as id, name, text, place, login FROM `album` JOIN users ON (album.id_user = users.id) WHERE hidden = 0');
+        $dbAlbum = $this->db->query('SELECT album.id as id, name, text, place, hash, login FROM `album` JOIN users ON (album.id_user = users.id) WHERE hidden = 0');
         $result = $dbAlbum->result();
         foreach ($result as $album){
             $main_photo = $this->db->query('SELECT name as fname,extension FROM foto WHERE id_album='.$album->id.' order by `order`, id asc limit 1');
