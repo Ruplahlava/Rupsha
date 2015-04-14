@@ -8,7 +8,8 @@
 class Album extends CI_Controller
 {
     const ALBUM_VIEW   = 'album/album';
-    const WELCOME_VIEW = 'welcome';
+    const WELCOME_BOX_VIEW = 'welcome_box';
+    const WELCOME_ROWS_VIEW = 'welcome_rows';
     const ERROR_VIEW   = '404';
 
     protected $data;
@@ -54,8 +55,11 @@ class Album extends CI_Controller
     {
         $this->data['title'] = 'Rupsha - Opensource picture sharing tool';
         $this->data['overview_array'] = $this->foto->getOverviewData();
-//        print_r($this->data['overview_array']);
-        $this->load->view(self::WELCOME_VIEW, $this->data);
+        if($this->data['settings'][0]->mainpage_style == 1){
+            $this->load->view(self::WELCOME_BOX_VIEW, $this->data);
+        }else{
+            $this->load->view(self::WELCOME_ROWS_VIEW, $this->data);
+        }
     }
 
     /**
