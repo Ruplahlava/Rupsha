@@ -53,12 +53,14 @@ class Album extends CI_Controller
      */
     public function _welcome()
     {
-        $this->data['title'] = 'Rupsha - Opensource picture sharing tool';
-        $this->data['overview_array'] = $this->foto->getOverviewData();
-        if($this->data['settings'][0]->mainpage_style == 1){
-            $this->load->view(self::WELCOME_BOX_VIEW, $this->data);
-        }else{
-            $this->load->view(self::WELCOME_ROWS_VIEW, $this->data);
+        if($this->data['settings'][0]->mainpage == 1) {
+            $this->data['title']          = 'Rupsha - Opensource picture sharing tool';
+            $this->data['overview_array'] = $this->foto->getOverviewData();
+            if ($this->data['settings'][0]->mainpage_style == 1) {
+                $this->load->view(self::WELCOME_BOX_VIEW, $this->data);
+            } else {
+                $this->load->view(self::WELCOME_ROWS_VIEW, $this->data);
+            }
         }
     }
 
