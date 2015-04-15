@@ -15,11 +15,12 @@ Whole project is built using Codeigniter 3.
 - Download latest release
 - Put all data in desired server folder.
 - Edit files `/application/config/database.php` and `/application/config/config.php` - set connection to your db and `base_url` of your project.
-- Run `/sql/install.sql` on your database.
+- Run `/sql/install.sql.sql` on your database.
 - Create admin user in table `user`, password uses sha1 function to store data.
 - Log in and have fun! `www.examplerupsha.com/admin`
 
 #####Version
+- 0.1.6 Added switchable mainpage, password protection. Codeigniter updated to 3.0.
 - 0.0.5 Added sorting
 - 0.0.4 New db version, visual upgrades
 - 0.0.3 Added some settings for page, creating users, changing password.
