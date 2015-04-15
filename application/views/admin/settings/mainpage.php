@@ -12,24 +12,24 @@
             <div class="form-group">
                 <label for="ganal" class="col-sm-3 control-label">Mainpage text<small class="text-muted"> HTML enabled</small></label>
                 <div class="col-sm-9">
-                    <textarea class="form-control" rows="6" name="mainpage_text"><?=$settings[0]->mainpage_text?></textarea>
+                    <textarea class="form-control" rows="6" name="mainpage_text" <?=($settings[0]->mainpage == '0' ? 'disabled': '');?>><?=$settings[0]->mainpage_text?></textarea>
                 </div>
             </div>
             <div class="radio">
                 <label>
-                    <input type="radio" name="mainpage_style" id="optionsRadios1" value="1" <?=($settings[0]->mainpage_style == '1' ? 'checked': '');?>>
+                    <input type="radio" name="mainpage_style" id="optionsRadios1" value="1" <?=($settings[0]->mainpage_style == '1' ? 'checked': '');?> <?=($settings[0]->mainpage == '0' ? 'disabled': '');?>>
                     Boxes with album names
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    <input type="radio" name="mainpage_style" id="optionsRadios2" value="2" <?=($settings[0]->mainpage_style == '2' ? 'checked': '');?>>
+                    <input type="radio" name="mainpage_style" id="optionsRadios2" value="2" <?=($settings[0]->mainpage_style == '2' ? 'checked': '');?> <?=($settings[0]->mainpage == '0' ? 'disabled': '');?>>
                     Each album on line with name and text
                 </label>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
-                    <button type="submit" class="btn btn-default submit-mainpage">Change values</button>
+                    <button type="submit" class="btn btn-default submit-mainpage <?=($settings[0]->mainpage == '0' ? 'disabled': '');?>" >Change values</button>
                 </div>
             </div>
         </form>

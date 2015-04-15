@@ -53,3 +53,6 @@ footer{
     /* inline-block space fix */
     margin-right:-4px;
 }
+.glyphicon-password-image{
+    font-size: 5em;
+}

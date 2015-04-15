@@ -21,7 +21,7 @@ $(function () {
             return !oldProp;
         });
         $('.submit-mainpage').toggleClass('disabled');
-        var address = $(location).attr('href').slice(0,-8)+'mainpage_switch';
+        var address = $(location).attr('href').replace('/mainpage','/mainpage_switch');
         $.post(address);
     });
     $("[name='hidden-switch']").bootstrapSwitch();
