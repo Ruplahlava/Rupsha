@@ -354,4 +354,124 @@ class Uploader extends CI_Controller
         }
     }
 
+        public function album_data()
+    {
+        $aColumns = array('date', 'name', 'hits');
+
+        // Indexed column (used for fast and accurate table cardinality)
+        $sIndexColumn = 'id';
+
+        // DB table to use
+        $sTable = 'album';
+        $input  = $this->input->post();
+        /**
+         * Paging
+         */
+        $sLimit = "";
+        if (isset($input['iDisplayStart']) && $input['iDisplayLength'] != '-1') {
+            $sLimit = " LIMIT " . intval($input['iDisplayStart']) . ", " . intval($input['iDisplayLength']);
+        }
+        /**
+         * Ordering
+         */
+        $aOrderingRules = array();
+        if (isset($input['iSortCol_0'])) {
+            $iSortingCols = intval($input['iSortingCols']);
+            for ($i = 0; $i < $iSortingCols; $i++) {
+                if ($input['bSortable_' . intval($input['iSortCol_' . $i])] == 'true') {
+                    $aOrderingRules[] = "`" . $aColumns[intval($input['iSortCol_' . $i])] . "` "
+                            . ($input['sSortDir_' . $i] === 'asc' ? 'asc' : 'desc');
+                }
+            }
+        }
+
+        if (!empty($aOrderingRules)) {
+            $sOrder = " ORDER BY " . implode(", ", $aOrderingRules);
+        } else {
+            $sOrder = "";
+        }
+
+
+        /**
+         * Filtering
+         * NOTE this does not match the built-in DataTables filtering which does it
+         * word by word on any field. It's possible to do here, but concerned about efficiency
+         * on very large tables, and MySQL's regex functionality is very limited
+         */
+        $iColumnCount = count($aColumns);
+
+        if (isset($input['sSearch']) && $input['sSearch'] != "") {
+            $aFilteringRules = array();
+            for ($i = 0; $i < $iColumnCount; $i++) {
+                if (isset($input['bSearchable_' . $i]) && $input['bSearchable_' . $i] == 'true') {
+                    $aFilteringRules[] = "`" . $aColumns[$i] . "` LIKE '%" . $this->db->real_escape_string($input['sSearch']) . "%'";
+                }
+            }
+            if (!empty($aFilteringRules)) {
+                $aFilteringRules = array('(' . implode(" OR ", $aFilteringRules) . ')');
+            }
+        }
+
+        // Individual column filtering
+        for ($i = 0; $i < $iColumnCount; $i++) {
+            if (isset($input['bSearchable_' . $i]) && $input['bSearchable_' . $i] == 'true' && $input['sSearch_' . $i] != '') {
+                $aFilteringRules[] = "`" . $aColumns[$i] . "` LIKE '%" . $this->db->real_escape_string($input['sSearch_' . $i]) . "%'";
+            }
+        }
+
+        if (!empty($aFilteringRules)) {
+            $sWhere = " WHERE " . implode(" AND ", $aFilteringRules);
+        } else {
+            $sWhere = "";
+        }
+
+
+        /**
+         * SQL queries
+         * Get data to display
+         */
+        $aQueryColumns = array();
+        foreach ($aColumns as $col) {
+            if ($col != ' ') {
+                $aQueryColumns[] = $col;
+            }
+        }
+
+        $sQuery = "
+    SELECT SQL_CALC_FOUND_ROWS `" . implode("`, `", $aQueryColumns) . "`
+    FROM `" . $sTable . "`" . $sWhere . $sOrder . $sLimit;
+
+        $rResult = $this->db->query($sQuery) or die($this->db->error);
+
+        // Data set length after filtering
+        $sQuery             = "SELECT FOUND_ROWS()";
+        $rResultFilterTotal = $this->db->query($sQuery) or die($this->db->error);
+        list($iFilteredTotal) = $rResultFilterTotal->result_array();
+
+        // Total data set length
+        $sQuery       = "SELECT COUNT(`" . $sIndexColumn . "`) as cnt FROM `" . $sTable . "`";
+        $rResultTotal = $this->db->query($sQuery) or die($this->db->error);
+        list($iTotal) = $rResultTotal->result_array();
+
+
+        /**
+         * Output
+         */
+        $output = array(
+            "sEcho"                => intval(@$input['sEcho']),
+            "iTotalRecords"        => $iTotal['cnt'],
+            "iTotalDisplayRecords" => $iFilteredTotal['FOUND_ROWS()'],
+            "aaData"               => array(),
+        );
+        foreach ($rResult->result_array() as $aRow){
+            $row = array();
+            for ($i = 0; $i < $iColumnCount; $i++) {
+                    $row[] = @$aRow[$aColumns[$i]];
+            }
+            $output['aaData'][] = $row;
+        }
+
+        echo json_encode($output);
+    }
+
 }

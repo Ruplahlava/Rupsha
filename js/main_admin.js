@@ -59,5 +59,14 @@ $(function () {
     $('.text-xeditable').editable({
         placement: 'right'
     });
-
+//datatables
+$(document).ready( function () {
+    $('#album_overview').DataTable({
+    serverSide: true,
+    ajax: {
+        url: $(location).attr('href').replace('/upload','/album_data'),
+        type: 'POST'
+    }
+} );
+} );
 });

@@ -44,6 +44,9 @@
     <div class="col-md-8">
         <div class="list-group">
             <?php if (!empty($album[0])): ?>
+            <table id="album_overview">
+                
+            </table>
                 <?php foreach ($album as $value): ?>
                     <a href="<?= current_url() ?>/<?= $value->id ?>" class="list-group-item">    
                         <span class="badge"><?= $value->cnt ?></span>

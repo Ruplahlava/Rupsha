@@ -22,6 +22,8 @@
         <link rel="stylesheet" href="<?= base_url() ?>js/jquery-ui.min.css">
         <link rel="stylesheet" href="<?= base_url() ?>css/main.css">
         <link rel="stylesheet" href="<?= base_url() ?>css/bootstrap-editable.css">
+        <!--<link rel="stylesheet" href="<?= base_url() ?>css/jquery.dataTables.css">-->
+        <link rel="stylesheet" href="<?= base_url() ?>css/dataTables.bootstrap.css">
         <?php if (isset($login_css)): ?>
             <link rel="stylesheet" href="<?= base_url() ?>css/login.css">
         <?php endif; ?>
@@ -29,6 +31,8 @@
         <script src="<?= base_url() ?>js/jquery-ui.min.js"></script>
         <script>window.jQuery || document.write('<script src="<?= base_url() ?>js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
         <script src="<?= base_url() ?>js/dropzone.min.js"></script>
+        <script src="<?= base_url() ?>js/jquery.dataTables.js"></script>
+        <script src="<?= base_url() ?>js/dataTables.bootstrap.js"></script>
         <script src="<?= base_url() ?>js/ZeroClipboard.min.js"></script>
         <script src="<?= base_url() ?>js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
