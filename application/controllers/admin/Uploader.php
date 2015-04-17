@@ -358,9 +358,12 @@ class Uploader extends CI_Controller
     /**
      * Provides data for data for datatables
      * 
+     * @todo needs refactoring - lot of sqls in controller, very big method
      */
     public function album_data()
     {
+        $input  = $this->input->get();
+        
         $aColumns = array('name', 'date', 'place', 'hits', 'cnt', 'id');
 
         // Indexed column (used for fast and accurate table cardinality)
@@ -368,17 +371,14 @@ class Uploader extends CI_Controller
 
         // DB table to use
         $sTable = 'datatables';
-        $input  = $this->input->get();
-        /**
-         * Paging
-         */
+
+        // limit for table
         $sLimit = "";
         if (isset($input['start']) && $input['length'] != '-1') {
             $sLimit = " LIMIT " . intval($input['start']) . ", " . intval($input['length']);
         }
-        /**
-         * Ordering
-         */
+
+        //ordering
         $aOrderingRules = array();
         if (isset($input['order'])) {
                     $aOrderingRules[] = "`" . $aColumns[intval($input['order'][0]['column'])] . "` "
@@ -391,15 +391,9 @@ class Uploader extends CI_Controller
             $sOrder = "";
         }
 
-
-        /**
-         * Filtering
-         * NOTE this does not match the built-in DataTables filtering which does it
-         * word by word on any field. It's possible to do here, but concerned about efficiency
-         * on very large tables, and MySQL's regex functionality is very limited
-         */
         $iColumnCount = count($aColumns);
 
+        // search
         if (isset($input['search']) && $input['search'] != "") {
             $aFilteringRules = array();
             for ($i = 0; $i < $iColumnCount; $i++) {
@@ -409,24 +403,14 @@ class Uploader extends CI_Controller
                 $aFilteringRules = array('(' . implode(" OR ", $aFilteringRules) . ')');
             }
         }
-        // Individual column filtering
-        for ($i = 0; $i < $iColumnCount; $i++) {
-            if (isset($input['bSearchable_' . $i]) && $input['bSearchable_' . $i] == 'true' && $input['sSearch_' . $i] != '') {
-                $aFilteringRules[] = "`" . $aColumns[$i] . "` LIKE '%" . $this->db->real_escape_string($input['sSearch_' . $i]) . "%'";
-            }
-        }
-
+        
+        // user filtering by user
         if (!empty($aFilteringRules)) {
             $sWhere = " WHERE " . implode(" AND ", $aFilteringRules) . "AND id_user=".$this->authentication->get_user_id();
         } else {
             $sWhere = "";
         }
 
-
-        /**
-         * SQL queries
-         * Get data to display
-         */
         $aQueryColumns = array();
         foreach ($aColumns as $col) {
             if ($col != ' ') {
@@ -435,8 +419,8 @@ class Uploader extends CI_Controller
         }
 
         $sQuery = "
-    SELECT SQL_CALC_FOUND_ROWS `" . implode("`, `", $aQueryColumns) . "`
-    FROM `" . $sTable . "`" . $sWhere . $sOrder . $sLimit;
+                    SELECT SQL_CALC_FOUND_ROWS `" . implode("`, `", $aQueryColumns) . "`
+                    FROM `" . $sTable . "`" . $sWhere . $sOrder . $sLimit;
 
         $rResult = $this->db->query($sQuery) or die($this->db->error);
 
@@ -479,6 +463,7 @@ class Uploader extends CI_Controller
 
     /**
      * Returns button html
+     * @return string view for button
      */
     public function generate_datalink($id)
     {

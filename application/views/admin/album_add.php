@@ -52,7 +52,7 @@
                             <th>Place</th>
                             <th>Visits</th>
                             <th>Photos</th>
-                            <th>Manage</th>
+                            <th>Added</th>
                         </tr>
                     </thead>
                 </table>

@@ -63,7 +63,7 @@ $(function () {
 
     var url = $(location).attr('href').replace('/uploader/upload', '/uploader/album_data');
     $('#album_overview').DataTable({
-        "order": [[ 0, "asc" ]],
+        "order": [[ 5, "desc" ]],
         serverSide: true,
         processing: true,
         ajax: {
