@@ -1,0 +1,1 @@
+<a class="btn btn-default" href="<?= base_url() ?>admin/uploader/upload/<?= $id_album ?>" role="button">Manage</a>

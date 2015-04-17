@@ -41,18 +41,21 @@
     </form>
 </div>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <div class="list-group">
             <?php if (!empty($album[0])): ?>
-            <table id="album_overview">
-                
-            </table>
-                <?php foreach ($album as $value): ?>
-                    <a href="<?= current_url() ?>/<?= $value->id ?>" class="list-group-item">    
-                        <span class="badge"><?= $value->cnt ?></span>
-                        <?= $value->name ?>
-                    </a>
-                <?php endforeach; ?>
+                <table id="album_overview" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Place</th>
+                            <th>Visits</th>
+                            <th>Photos</th>
+                            <th>Manage</th>
+                        </tr>
+                    </thead>
+                </table>
             <?php else: ?>
                 <div class="alert alert-info" role="alert">You have not created any albums yet!</div>
             <?php endif; ?>

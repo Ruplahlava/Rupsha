@@ -3,13 +3,14 @@
 class Uploader extends CI_Controller
 {
     //views
-    const UPLOADER_VIEW  = 'admin/uploader';
-    const ALBUM_ADD_VIEW = 'admin/album_add';
-    const MAIN_VIEW      = 'admin/main';
+    const UPLOADER_VIEW          = 'admin/uploader';
+    const ALBUM_ADD_VIEW         = 'admin/album_add';
+    const MAIN_VIEW              = 'admin/main';
+    const DATATABLES_BUTTON_VIEW = 'admin/datatables_button';
     //title
-    const TITLE_MAIN     = "Fotoshare - Admin";
+    const TITLE_MAIN             = "Fotoshare - Admin";
     //Path
-    const UPLOAD_PATH    = "./img/user/";
+    const UPLOAD_PATH            = "./img/user/";
 
     public $data;
     public $admin_methods;
@@ -350,39 +351,38 @@ class Uploader extends CI_Controller
             $this->foto->update_album($id_album,array('hidden' => '0'));
         } else {
             //hide it
-            $this->foto->update_album($id_album,array('hidden' => '1'));
+            $this->foto->update_album($id_album, array('hidden' => '1'));
         }
     }
 
-        public function album_data()
+    /**
+     * Provides data for data for datatables
+     * 
+     */
+    public function album_data()
     {
-        $aColumns = array('date', 'name', 'hits');
+        $aColumns = array('name', 'date', 'place', 'hits', 'cnt', 'id');
 
         // Indexed column (used for fast and accurate table cardinality)
         $sIndexColumn = 'id';
 
         // DB table to use
-        $sTable = 'album';
-        $input  = $this->input->post();
+        $sTable = 'datatables';
+        $input  = $this->input->get();
         /**
          * Paging
          */
         $sLimit = "";
-        if (isset($input['iDisplayStart']) && $input['iDisplayLength'] != '-1') {
-            $sLimit = " LIMIT " . intval($input['iDisplayStart']) . ", " . intval($input['iDisplayLength']);
+        if (isset($input['start']) && $input['length'] != '-1') {
+            $sLimit = " LIMIT " . intval($input['start']) . ", " . intval($input['length']);
         }
         /**
          * Ordering
          */
         $aOrderingRules = array();
-        if (isset($input['iSortCol_0'])) {
-            $iSortingCols = intval($input['iSortingCols']);
-            for ($i = 0; $i < $iSortingCols; $i++) {
-                if ($input['bSortable_' . intval($input['iSortCol_' . $i])] == 'true') {
-                    $aOrderingRules[] = "`" . $aColumns[intval($input['iSortCol_' . $i])] . "` "
-                            . ($input['sSortDir_' . $i] === 'asc' ? 'asc' : 'desc');
-                }
-            }
+        if (isset($input['order'])) {
+                    $aOrderingRules[] = "`" . $aColumns[intval($input['order'][0]['column'])] . "` "
+                            . $input['order'][0]['dir'];
         }
 
         if (!empty($aOrderingRules)) {
@@ -400,18 +400,15 @@ class Uploader extends CI_Controller
          */
         $iColumnCount = count($aColumns);
 
-        if (isset($input['sSearch']) && $input['sSearch'] != "") {
+        if (isset($input['search']) && $input['search'] != "") {
             $aFilteringRules = array();
             for ($i = 0; $i < $iColumnCount; $i++) {
-                if (isset($input['bSearchable_' . $i]) && $input['bSearchable_' . $i] == 'true') {
-                    $aFilteringRules[] = "`" . $aColumns[$i] . "` LIKE '%" . $this->db->real_escape_string($input['sSearch']) . "%'";
-                }
+                    $aFilteringRules[] = "`" . $aColumns[$i] . "` LIKE '%" . $input['search']['value'] . "%'";
             }
             if (!empty($aFilteringRules)) {
                 $aFilteringRules = array('(' . implode(" OR ", $aFilteringRules) . ')');
             }
         }
-
         // Individual column filtering
         for ($i = 0; $i < $iColumnCount; $i++) {
             if (isset($input['bSearchable_' . $i]) && $input['bSearchable_' . $i] == 'true' && $input['sSearch_' . $i] != '') {
@@ -420,7 +417,7 @@ class Uploader extends CI_Controller
         }
 
         if (!empty($aFilteringRules)) {
-            $sWhere = " WHERE " . implode(" AND ", $aFilteringRules);
+            $sWhere = " WHERE " . implode(" AND ", $aFilteringRules) . "AND id_user=".$this->authentication->get_user_id();
         } else {
             $sWhere = "";
         }
@@ -466,12 +463,27 @@ class Uploader extends CI_Controller
         foreach ($rResult->result_array() as $aRow){
             $row = array();
             for ($i = 0; $i < $iColumnCount; $i++) {
+                if($aColumns[$i] == 'id'){
+                    $row[] = $this->generate_datalink($aRow[$aColumns[$i]]);
+                }else if($aColumns[$i] == 'date'){
+                    $row[] =  date('d.m.Y',strtotime(@$aRow[$aColumns[$i]]));
+                }else{
                     $row[] = @$aRow[$aColumns[$i]];
+                }
             }
             $output['aaData'][] = $row;
         }
 
         echo json_encode($output);
+    }
+
+    /**
+     * Returns button html
+     */
+    public function generate_datalink($id)
+    {
+        $this->data['id_album'] = $id;
+        return $this->load->view(self::DATATABLES_BUTTON_VIEW, $this->data, true);
     }
 
 }

@@ -52,7 +52,7 @@ $(function () {
         datepicker: {
                 weekStart: 1
            }
-        });
+    });
     $('.location-xeditable').editable({
         placement: 'right'
     });
@@ -60,13 +60,16 @@ $(function () {
         placement: 'right'
     });
 //datatables
-$(document).ready( function () {
+
+    var url = $(location).attr('href').replace('/uploader/upload', '/uploader/album_data');
     $('#album_overview').DataTable({
-    serverSide: true,
-    ajax: {
-        url: $(location).attr('href').replace('/upload','/album_data'),
-        type: 'POST'
-    }
-} );
-} );
+        "order": [[ 0, "asc" ]],
+        serverSide: true,
+        processing: true,
+        ajax: {
+            url: url,
+            type: 'GET'
+        }
+    });
+
 });
