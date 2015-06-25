@@ -14,6 +14,7 @@ class Uploader extends CI_Controller
 
     public $data;
     public $admin_methods;
+    protected $page_settings;
 
     /**
      * __construct
@@ -26,6 +27,8 @@ class Uploader extends CI_Controller
             "index",
             "upload"
         );
+        $this->load->model('settings_model');
+        $this->page_settings = $this->settings_model->get_page_settings();
     }
 
     /**
@@ -102,7 +105,11 @@ class Uploader extends CI_Controller
         $this->load->library('image_lib');
         $picture_data = $this->_upload_picture();
         $this->_create_thumb($picture_data);
-        $this->_create_watermark($picture_data);
+        if($this->page_settings[0]->watermark == 1){
+            $this->_create_watermark($picture_data);
+        }else{
+            $this->_image_resize($picture_data,FALSE);
+        }
 
         chmod($picture_data['full_path'], 0700);
         $foto['name']      = $picture_data['raw_name'];
@@ -167,19 +174,36 @@ class Uploader extends CI_Controller
      * Resizes picture if it is bigger then desired
      * @param array $picture_data
      */
-    public function _image_resize($picture_data)
+    public function _image_resize($picture_data,$watermark = TRUE)
     {
-        $this->load->model('settings_model');
-        $page_settings = $this->settings_model->get_page_settings();
-        if($page_settings[0]->max_dimension < $picture_data['image_width'] || $page_settings[0]->max_dimension < $picture_data['image_height']) {
+        if($this->page_settings[0]->max_dimension < $picture_data['image_width'] || $this->page_settings[0]->max_dimension < $picture_data['image_height']) {
             $config['image_library']  = 'gd2';
             $config['source_image']   = $picture_data['full_path'];
             $config['maintain_ratio'] = TRUE;
-            if (0 != $page_settings[0]->max_dimension) {
-                $config['width']  = $page_settings[0]->max_dimension;
-                $config['height'] = $page_settings[0]->max_dimension;
+            if (0 != $this->page_settings[0]->max_dimension) {
+                $config['width']  = $this->page_settings[0]->max_dimension;
+                $config['height'] = $this->page_settings[0]->max_dimension;
             }
-            $config['quality'] = $page_settings[0]->quality;
+            $config['quality'] = $this->page_settings[0]->quality;
+            //no watermaking
+            if(FALSE === $watermark){
+                $config['create_thumb']     = TRUE;
+                $config['thumb_marker']     = "_wm";
+            }
+            $this->image_lib->clear();
+            $this->image_lib->initialize($config);
+            if (!$this->image_lib->resize()) {
+                print_r($this->image_lib->display_errors());
+                die("Unable to resize picture.");
+            }
+        } elseif ($watermark == false) {
+            $config['image_library'] = 'gd2';
+            $config['source_image'] = $picture_data['full_path'];
+            $config['maintain_ratio'] = true;
+            $config['quality'] = $this->page_settings[0]->quality;
+            //no watermaking
+            $config['create_thumb'] = true;
+            $config['thumb_marker'] = "_wm";
             $this->image_lib->clear();
             $this->image_lib->initialize($config);
             if (!$this->image_lib->resize()) {

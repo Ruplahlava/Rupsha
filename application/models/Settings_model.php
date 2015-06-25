@@ -18,12 +18,16 @@ class Settings_model extends CI_Model
     }
 
     /**
-     * 
+     *
      * @param array $data
      */
     public function set_page_settings($data)
     {
-       return $this->db->update('page_settings', $data, 'id=1');
+        if (!isset($data['watermark'])) {
+            $data['watermark'] = 0;
+        }
+
+        return $this->db->update('page_settings', $data, 'id=1');
     }
 
 }

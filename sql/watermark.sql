@@ -1,0 +1,1 @@
+ALTER TABLE  `page_settings` ADD  `watermark` INT NOT NULL DEFAULT  '1'
