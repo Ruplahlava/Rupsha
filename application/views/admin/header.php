@@ -1,5 +1,6 @@
 <script>
     ZeroClipboard.config({swfPath: "<?= base_url() ?>swf/ZeroClipboard.swf"});
+    var CIBaseUrl = "<?= base_url() ?>";
 </script>
 <body>
     <!--[if lt IE 7]>

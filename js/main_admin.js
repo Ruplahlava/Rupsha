@@ -59,6 +59,24 @@ $(function () {
     $('.text-xeditable').editable({
         placement: 'right'
     });
+    //zip generating
+    //var loc = String(window.location);
+    //var id =  loc.split("/").pop();
+    $('.gen-del').hide();
+    $('.gen-process').hide();
+    $('.gen-full').click(function(event){
+        event.preventDefault();
+        var url = $(location).attr('href').replace('/uploader/upload', '/uploader/generate_zip/hq');
+        console.log(id);
+        console.log(CIBaseUrl);
+    });
+
+    //settings
+    $('.album-settings-hide').hide();
+    $('.album-settings-hide-btn').click(function(event){
+        event.preventDefault();
+        $('.album-settings-hide').toggle('fast');
+    });
 //datatables
 
     var url = $(location).attr('href').replace('/uploader/upload', '/uploader/album_data');

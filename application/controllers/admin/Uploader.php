@@ -169,10 +169,12 @@ class Uploader extends CI_Controller
             die("Unable to watermark picture.");
         }
     }
-    
+
     /**
      * Resizes picture if it is bigger then desired
      * @param array $picture_data
+     * @param bool $watermark
+     * @return bool
      */
     public function _image_resize($picture_data,$watermark = TRUE)
     {
@@ -332,8 +334,9 @@ class Uploader extends CI_Controller
     }
 
     /**
-     * 
+     *
      * @param object $album
+     * @return object
      */
     public function _prep_album_xeditable($album)
     {
@@ -344,7 +347,7 @@ class Uploader extends CI_Controller
     
     /**
      * @todo check if photos are in album
-     * @param string $param
+     * @param string $id_album
      */
     public function sort_dz($id_album = null)
     {
@@ -493,6 +496,26 @@ class Uploader extends CI_Controller
     {
         $this->data['id_album'] = $id;
         return $this->load->view(self::DATATABLES_BUTTON_VIEW, $this->data, true);
+    }
+
+
+    public function generate_zip($sQuality = '', $sId = null)
+    {
+        $this->load->library('zip');
+        $this->zip->compression_level = 0;
+        $sAffix = '';
+        if ('hq' !== strtolower($sQuality)) {
+            $sAffix = "_wm";
+        }
+        if($sId !== null){
+            $oPhotos = $this->foto->get_album_content($sId);
+            foreach ($oPhotos as $oSinglePhoto) {
+
+            }
+
+        }
+
+
     }
 
 }
