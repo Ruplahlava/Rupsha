@@ -34,14 +34,23 @@
             <dd><input type="checkbox" name="hidden-switch" <?= $album[0]->hidden == 0 ? 'checked' : '' ?> ></dd>
             <dt>Generate download zip</dt>
             <dd>
-                <a href="#" class="gen-full">
-                    Full resolution<span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
-                </a> <br>
-                <a href="#" class="gen-sm">
-                    Resized <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
-                </a>
-                <a href="#" class="gen-del">Delete</a>
+                <div class="gen-photo-wrap" <?= $zip_exists ? 'style="display: none;"': '' ?>>
+                    <a href="#" class="gen-photo" quality="hq">
+                        Full resolution<span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span>
+                    </a> <br>
+                    <a href="#" class="gen-photo" quality="lq">
+                        Resized <span class="glyphicon glyphicon-resize-small" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <a href="#" class="gen-del" <?= $zip_exists ? '' : 'style="display: none;"'?>>Delete</a>
                 <p class="gen-process text-muted">Processing</p>
+                <div class="gen-error alert alert-danger alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4>Something happened!</h4>
+                    <p>
+                       Out of memory maybe? Try resized quality. (Big files can take a lot of memory...)
+                    </p>
+                </div>
             </dd>
         </dl>
     </div>

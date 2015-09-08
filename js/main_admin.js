@@ -60,16 +60,43 @@ $(function () {
         placement: 'right'
     });
     //zip generating
-    //var loc = String(window.location);
-    //var id =  loc.split("/").pop();
-    $('.gen-del').hide();
+
     $('.gen-process').hide();
-    $('.gen-full').click(function(event){
+    $('.gen-error').hide();
+    $('.gen-photo').click(function(event){
         event.preventDefault();
-        var url = $(location).attr('href').replace('/uploader/upload', '/uploader/generate_zip/hq');
-        console.log(id);
-        console.log(CIBaseUrl);
+        $('.gen-photo-wrap').hide();
+        $('.gen-process').show();
+        var url = $(location).attr('href').replace('/uploader/upload', '/uploader/generate_zip/'+$(this).attr('quality'));
+        $.getJSON( url, function( json ) {
+            if(json.success == 1){
+                $('.gen-del').show();
+                $('.gen-process').hide();
+            }
+        }).fail(function( jqxhr, textStatus, error ) {
+            $('.gen-error').show();
+            //$('.gen-error').show().delay( 10000 ).hide();
+            $('.gen-process').hide();
+            $('.gen-photo-wrap').show();
+        });
     });
+
+    $().alert()
+    // ZIP deletion
+    $('.gen-del').click(function (event) {
+        event.preventDefault();
+        var url = $(location).attr('href').replace('/uploader/upload', '/uploader/delete_zip');
+        $.getJSON( url, function( json ) {
+            if(json.success == 1){
+                $('.gen-del').hide();
+                $('.gen-photo-wrap').show();
+            }
+        }).fail(function( jqxhr, textStatus, error ) {
+            $('.gen-error').show().delay( 10000 ).hide();
+            $('.gen-process').hide();
+        });
+    });
+
 
     //settings
     $('.album-settings-hide').hide();

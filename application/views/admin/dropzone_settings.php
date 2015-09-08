@@ -130,7 +130,7 @@
         // Hide the total progress bar when nothing's uploading anymore
         myDropzone.on("queuecomplete", function (progress) {
             document.querySelector("#total-progress").style.opacity = "0";
-//            location.reload();
+            location.reload();
         });
 
         myDropzone.on("removedfile", function (file) {
