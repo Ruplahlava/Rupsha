@@ -11,6 +11,7 @@ class Uploader extends CI_Controller
     const TITLE_MAIN             = "Fotoshare - Admin";
     //Path
     const UPLOAD_PATH            = "./img/user/";
+    const ZIP_FILENAME           = "download.zip";
 
     public $data;
     public $admin_methods;
@@ -46,28 +47,32 @@ class Uploader extends CI_Controller
     {
         // Pridani alba       
         if ($this->input->post() && $this->_validate_album($this->input->post())) {
-            $post            = $this->input->post();
+            $post = $this->input->post();
             $post['id_user'] = $this->authentication->get_user_id();
-            $post['hash']    = substr(bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)), 0, 10);
+            $post['hash'] = substr(bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)), 0, 10);
             $this->foto->add_album($post);
             redirect(current_url());
             // Klasicke zobrazeni           
-        } else if (FALSE !== $this->uri->segment(4) && !is_numeric($this->uri->segment(4))) {
-            $this->data['album'] = $this->foto->get_album($this->authentication->get_user_id());
-            $this->load->view(self::ALBUM_ADD_VIEW, $this->data);
-            // Nahravani fotek
         } else {
-            $this->authentication->is_owner($this->uri->segment(4));
-            if ('upload' === $this->uri->segment(5)) {
-                $picture_data = $this->_process_picture();
-                json_encode(array('name' => $picture_data['raw_name'], 'size' => $picture_data['full_path']));
+            if (false !== $this->uri->segment(4) && !is_numeric($this->uri->segment(4))) {
+                $this->data['album'] = $this->foto->get_album($this->authentication->get_user_id());
+                $this->load->view(self::ALBUM_ADD_VIEW, $this->data);
+                // Nahravani fotek
             } else {
-                // Zobrazeni uploaderu     
-                $this->data['id_album']        = $this->uri->segment(4);
-                $this->data['user']            = $this->authentication->get_user_login();
-                $this->data['album']           = $this->foto->get_album($this->authentication->get_user_id(), $this->uri->segment(4));
-                $this->data['album_xeditable'] = $this->_prep_album_xeditable($this->data['album'][0]);
-                $this->load->view(self::UPLOADER_VIEW, $this->data);
+                $this->authentication->is_owner($this->uri->segment(4));
+                if ('upload' === $this->uri->segment(5)) {
+                    $picture_data = $this->_process_picture();
+                    json_encode(array('name' => $picture_data['raw_name'], 'size' => $picture_data['full_path']));
+                } else {
+                    // Zobrazeni uploaderu
+                    $this->data['id_album'] = $this->uri->segment(4);
+                    $this->data['user'] = $this->authentication->get_user_login();
+                    $this->data['album'] = $this->foto->get_album($this->authentication->get_user_id(),
+                        $this->uri->segment(4));
+                    $this->data['album_xeditable'] = $this->_prep_album_xeditable($this->data['album'][0]);
+                    $this->data['zip_exists'] = $this->_zip_exists($this->data['id_album']) ? true : false;
+                    $this->load->view(self::UPLOADER_VIEW, $this->data);
+                }
             }
         }
     }
@@ -169,10 +174,12 @@ class Uploader extends CI_Controller
             die("Unable to watermark picture.");
         }
     }
-    
+
     /**
      * Resizes picture if it is bigger then desired
      * @param array $picture_data
+     * @param bool $watermark
+     * @return bool
      */
     public function _image_resize($picture_data,$watermark = TRUE)
     {
@@ -332,8 +339,9 @@ class Uploader extends CI_Controller
     }
 
     /**
-     * 
+     *
      * @param object $album
+     * @return object
      */
     public function _prep_album_xeditable($album)
     {
@@ -344,7 +352,7 @@ class Uploader extends CI_Controller
     
     /**
      * @todo check if photos are in album
-     * @param string $param
+     * @param string $id_album
      */
     public function sort_dz($id_album = null)
     {
@@ -493,6 +501,85 @@ class Uploader extends CI_Controller
     {
         $this->data['id_album'] = $id;
         return $this->load->view(self::DATATABLES_BUTTON_VIEW, $this->data, true);
+    }
+
+    /**
+     * Create zip for album
+     * @param string $sQuality
+     * @param string $sId
+     */
+    public function generate_zip($sQuality = '', $sId = null)
+    {
+        $this->authentication->is_owner($sId);
+        $sPath = $this->_get_photo_path($sId);
+        if ($this->_zip_exists($sId)) {
+            $aResponse = array('success' => '0', 'error' => 'file already exists');
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($aResponse));
+            $this->output->_display();
+            die();
+        }
+        $this->load->library('zip');
+        $this->zip->compression_level = 0;
+        $sAffix = '';
+        if ('hq' !== strtolower($sQuality)) {
+            $sAffix = "_wm";
+        }
+        if ($sId !== null) {
+            $oPhotos = $this->foto->get_album_content($sId);
+            foreach ($oPhotos as $aSinglePhoto) {
+
+                $sPhotoPath = $sPath . $aSinglePhoto->name . $sAffix . $aSinglePhoto->extension;
+                $this->zip->read_file($sPhotoPath);
+            }
+            if ($this->zip->archive($sPath . self::ZIP_FILENAME)) {
+                $aResponse = array('success' => '1');
+            } else {
+                $aResponse = array('success' => '0', 'error' => 'error while archiving');
+            }
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($aResponse));
+        }
+
+    }
+
+    /**
+     * Deletes zip from album
+     * @param string $sId
+     */
+    public function delete_zip($sId = null)
+    {
+        $this->authentication->is_owner($sId);
+        if ($this->_zip_exists($sId) && unlink($this->_get_photo_path($sId).self::ZIP_FILENAME)) {
+            $aResponse = array('success' => '1');
+        }else{
+            $aResponse = array('success' => '0','error'=>'file does not exists');
+        }
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($aResponse));
+    }
+
+    /**
+     * Check if zip exists for certain album
+     * @param string $sId
+     * @return bool
+     */
+    public function _zip_exists($sId){
+        return file_exists($this->_get_photo_path($sId).self::ZIP_FILENAME);
+    }
+
+    /**
+     * Return path to photos
+     * @param string $sId
+     * @return string
+     */
+    public function _get_photo_path($sId){
+        $this->authentication->is_owner($sId);
+        $sLogin = $this->authentication->get_user_login();
+        return self::UPLOAD_PATH . $sLogin . '/' . $sId . '/';
     }
 
 }
