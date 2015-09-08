@@ -20,6 +20,8 @@ Whole project is built using Codeigniter 3.
 - Log in and have fun! `www.examplerupsha.com/admin`
 
 #####Version
+- 0.1.9 Download zip generator
+- 0.1.8 Watermark enable/disable
 - 0.1.7 Added datatables for album management
 - 0.1.6 Added switchable mainpage, password protection. Codeigniter updated to 3.0.
 - 0.0.5 Added sorting
