@@ -7,11 +7,6 @@ class Uploader extends CI_Controller
     const ALBUM_ADD_VIEW         = 'admin/album_add';
     const MAIN_VIEW              = 'admin/main';
     const DATATABLES_BUTTON_VIEW = 'admin/datatables_button';
-    //title
-    const TITLE_MAIN             = "Fotoshare - Admin";
-    //Path
-    const UPLOAD_PATH            = "./img/user/";
-    const ZIP_FILENAME           = "download.zip";
 
     public $data;
     public $admin_methods;
@@ -23,7 +18,7 @@ class Uploader extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->data['title'] = self::TITLE_MAIN;
+        $this->data['title'] = TITLE_ADMINISTRATION;
         $this->admin_methods = array(
             "index",
             "upload"
@@ -83,7 +78,7 @@ class Uploader extends CI_Controller
      */
     public function _upload_picture()
     {
-        $config['upload_path']   = self::UPLOAD_PATH . $this->authentication->get_user_login() . '/' . $this->uri->segment(4);
+        $config['upload_path']   = UPLOAD_PATH . $this->authentication->get_user_login() . '/' . $this->uri->segment(4);
         $config['allowed_types'] = 'gif|jpg|png';
         $config['encrypt_name']  = TRUE;
 
@@ -533,7 +528,7 @@ class Uploader extends CI_Controller
                 $sPhotoPath = $sPath . $aSinglePhoto->name . $sAffix . $aSinglePhoto->extension;
                 $this->zip->read_file($sPhotoPath);
             }
-            if ($this->zip->archive($sPath . self::ZIP_FILENAME)) {
+            if ($this->zip->archive($sPath . ZIP_FILENAME)) {
                 $aResponse = array('success' => '1');
             } else {
                 $aResponse = array('success' => '0', 'error' => 'error while archiving');
@@ -552,7 +547,7 @@ class Uploader extends CI_Controller
     public function delete_zip($sId = null)
     {
         $this->authentication->is_owner($sId);
-        if ($this->_zip_exists($sId) && unlink($this->_get_photo_path($sId).self::ZIP_FILENAME)) {
+        if ($this->_zip_exists($sId) && unlink($this->_get_photo_path($sId).ZIP_FILENAME)) {
             $aResponse = array('success' => '1');
         }else{
             $aResponse = array('success' => '0','error'=>'file does not exists');
@@ -568,7 +563,7 @@ class Uploader extends CI_Controller
      * @return bool
      */
     public function _zip_exists($sId){
-        return file_exists($this->_get_photo_path($sId).self::ZIP_FILENAME);
+        return file_exists($this->_get_photo_path($sId).ZIP_FILENAME);
     }
 
     /**
@@ -579,7 +574,7 @@ class Uploader extends CI_Controller
     public function _get_photo_path($sId){
         $this->authentication->is_owner($sId);
         $sLogin = $this->authentication->get_user_login();
-        return self::UPLOAD_PATH . $sLogin . '/' . $sId . '/';
+        return UPLOAD_PATH . $sLogin . '/' . $sId . '/';
     }
 
 }

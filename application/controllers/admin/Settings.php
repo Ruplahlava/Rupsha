@@ -18,7 +18,7 @@ class Settings extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->data['title'] = 'Settings';
+        $this->data['title'] = TITLE_ADMINISTRATION.' - Settings';
         $this->load->model('settings_model');
     }
 
@@ -37,7 +37,7 @@ class Settings extends CI_Controller
     {
         if (true === $this->authentication->is_admin()) {
             $this->load->model('user');
-            $this->data['title'] = 'Users';
+            $this->data['title'] = TITLE_ADMINISTRATION.' - Users';
             $this->data['users'] = $this->user->get_all_users();
             $this->load->view(self::USERS_VIEW, $this->data);
         }
@@ -48,7 +48,7 @@ class Settings extends CI_Controller
      */
     public function account()
     {
-        $this->data['title'] = 'Account';
+        $this->data['title'] = TITLE_ADMINISTRATION.' - Account';
         $this->load->view(self::ACCOUNT_VIEW, $this->data);
     }
 
@@ -67,7 +67,7 @@ class Settings extends CI_Controller
     {
         if (true === $this->authentication->is_admin()) {
             $this->load->helper('form');
-            $this->data['title']    = 'Page';
+            $this->data['title']    = TITLE_ADMINISTRATION.' - Page';
             $this->data['settings'] = $this->settings_model->get_page_settings();
             $this->load->view(self::PAGE_VIEW, $this->data);
         }
@@ -158,7 +158,7 @@ class Settings extends CI_Controller
     public function mainpage()
     {
         if (true === $this->authentication->is_admin()) {
-            $this->data['title']    = 'Mainpage';
+            $this->data['title']    = TITLE_ADMINISTRATION.' - Mainpage';
             $this->data['settings'] = $this->settings_model->get_page_settings();
             $this->load->view(self::MAINPAGE_VIEW, $this->data);
         }

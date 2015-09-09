@@ -12,8 +12,6 @@ class Album extends CI_Controller
     const WELCOME_ROWS_VIEW = 'welcome_rows';
     const ERROR_VIEW   = '404';
     const PASSWORD_VIEW   = 'password';
-    const ZIP_FILENAME           = "download.zip";
-    const UPLOAD_PATH            = "./img/user/";
 
     protected $data;
 
@@ -57,7 +55,7 @@ class Album extends CI_Controller
     public function _welcome()
     {
         if($this->data['settings'][0]->mainpage == 1) {
-            $this->data['title']          = 'Rupsha - Opensource picture sharing tool';
+            $this->data['title']          = TITLE_WEBPAGE;
             $this->data['overview_array'] = $this->foto->getOverviewData();
             if ($this->data['settings'][0]->mainpage_style == 1) {
                 $this->load->view(self::WELCOME_BOX_VIEW, $this->data);
@@ -75,7 +73,7 @@ class Album extends CI_Controller
     {
         $this->load->model('user');
         $this->data['album'] = $album;
-        $this->data['title'] = $album[0]->name . ' - Rupsha';
+        $this->data['title'] = $album[0]->name . ' - '.TITLE_WEBPAGE;
         $this->data['user']  = $this->user->get_user($album[0]->id_user);
         $this->data['zip_download'] = $this->_zip_exists($album,$this->user->get_user($album[0]->id_user));
         if($this->input->post('album_password')){
@@ -146,7 +144,7 @@ class Album extends CI_Controller
      */
     private function _zip_exists($aAlbum, $aUser)
     {
-        return file_exists(self::UPLOAD_PATH . $aUser[0]->login . '/' . $aAlbum[0]->id . '/' . self::ZIP_FILENAME);
+        return file_exists(UPLOAD_PATH . $aUser[0]->login . '/' . $aAlbum[0]->id . '/' . ZIP_FILENAME);
     }
 
 }
