@@ -24,6 +24,7 @@ class Uploader extends CI_Controller
             "upload"
         );
         $this->load->model('settings_model');
+        $this->load->library('download_zip');
         $this->page_settings = $this->settings_model->get_page_settings();
     }
 
@@ -65,7 +66,7 @@ class Uploader extends CI_Controller
                     $this->data['album'] = $this->foto->get_album($this->authentication->get_user_id(),
                         $this->uri->segment(4));
                     $this->data['album_xeditable'] = $this->_prep_album_xeditable($this->data['album'][0]);
-                    $this->data['zip_exists'] = $this->_zip_exists($this->data['id_album']) ? true : false;
+                    $this->data['zip_exists'] = $this->download_zip->zip_exists($this->data['id_album']) ? true : false;
                     $this->load->view(self::UPLOADER_VIEW, $this->data);
                 }
             }
@@ -506,38 +507,10 @@ class Uploader extends CI_Controller
     public function generate_zip($sQuality = '', $sId = null)
     {
         $this->authentication->is_owner($sId);
-        $sPath = $this->_get_photo_path($sId);
-        if ($this->_zip_exists($sId)) {
-            $aResponse = array('success' => '0', 'error' => 'file already exists');
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($aResponse));
-            $this->output->_display();
-            die();
-        }
-        $this->load->library('zip');
-        $this->zip->compression_level = 0;
-        $sAffix = '';
-        if ('hq' !== strtolower($sQuality)) {
-            $sAffix = "_wm";
-        }
-        if ($sId !== null) {
-            $oPhotos = $this->foto->get_album_content($sId);
-            foreach ($oPhotos as $aSinglePhoto) {
-
-                $sPhotoPath = $sPath . $aSinglePhoto->name . $sAffix . $aSinglePhoto->extension;
-                $this->zip->read_file($sPhotoPath);
-            }
-            if ($this->zip->archive($sPath . ZIP_FILENAME)) {
-                $aResponse = array('success' => '1');
-            } else {
-                $aResponse = array('success' => '0', 'error' => 'error while archiving');
-            }
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($aResponse));
-        }
-
+        $aResponse = $this->download_zip->generate_zip($sQuality,$sId);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($aResponse));
     }
 
     /**
@@ -547,34 +520,10 @@ class Uploader extends CI_Controller
     public function delete_zip($sId = null)
     {
         $this->authentication->is_owner($sId);
-        if ($this->_zip_exists($sId) && unlink($this->_get_photo_path($sId).ZIP_FILENAME)) {
-            $aResponse = array('success' => '1');
-        }else{
-            $aResponse = array('success' => '0','error'=>'file does not exists');
-        }
+        $aResponse = $this->download_zip->delete_zip($sId);
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($aResponse));
-    }
-
-    /**
-     * Check if zip exists for certain album
-     * @param string $sId
-     * @return bool
-     */
-    public function _zip_exists($sId){
-        return file_exists($this->_get_photo_path($sId).ZIP_FILENAME);
-    }
-
-    /**
-     * Return path to photos
-     * @param string $sId
-     * @return string
-     */
-    public function _get_photo_path($sId){
-        $this->authentication->is_owner($sId);
-        $sLogin = $this->authentication->get_user_login();
-        return UPLOAD_PATH . $sLogin . '/' . $sId . '/';
     }
 
 }

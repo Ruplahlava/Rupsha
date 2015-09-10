@@ -72,10 +72,12 @@ class Album extends CI_Controller
     public function _show_album($album)
     {
         $this->load->model('user');
+        $this->load->library('download_zip');
+        $aUser = $this->user->get_user($album[0]->id_user);
         $this->data['album'] = $album;
         $this->data['title'] = $album[0]->name . ' - '.TITLE_WEBPAGE;
-        $this->data['user']  = $this->user->get_user($album[0]->id_user);
-        $this->data['zip_download'] = $this->_zip_exists($album,$this->user->get_user($album[0]->id_user));
+        $this->data['user']  = $aUser;
+        $this->data['zip_download'] = $this->download_zip->zip_exists($album[0]->id_user,$aUser[0]->login);
         if($this->input->post('album_password')){
             $this->authentication->set_stored_password($this->input->post('album_password'));
         }
@@ -135,16 +137,6 @@ class Album extends CI_Controller
             $this->session->set_flashdata('err', 'Incorrect password');
         }
         return false;
-    }
-
-    /**
-     * @param array $aAlbum
-     * @param array $aUser
-     * @return bool
-     */
-    private function _zip_exists($aAlbum, $aUser)
-    {
-        return file_exists(UPLOAD_PATH . $aUser[0]->login . '/' . $aAlbum[0]->id . '/' . ZIP_FILENAME);
     }
 
 }
