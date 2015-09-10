@@ -12,7 +12,7 @@
 <?php if ($zip_download): ?>
     <div class="row album-text">
         <div class="col-md-12">
-            <a href="<?= base_url().Album::UPLOAD_PATH . $user[0]->login . '/' . $album[0]->id . '/' . Album::ZIP_FILENAME ?>">
+            <a href="<?= base_url().UPLOAD_PATH . $user[0]->login . '/' . $album[0]->id . '/' . ZIP_FILENAME ?>">
                 <span class="glyphicon glyphicon-download-alt glyphicon-album-download" aria-hidden="true"></span>
                 Download
             </a>

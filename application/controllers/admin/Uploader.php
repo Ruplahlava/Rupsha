@@ -6,12 +6,6 @@ class Uploader extends CI_Controller
     const UPLOADER_VIEW          = 'admin/uploader';
     const ALBUM_ADD_VIEW         = 'admin/album_add';
     const MAIN_VIEW              = 'admin/main';
-    const DATATABLES_BUTTON_VIEW = 'admin/datatables_button';
-    //title
-    const TITLE_MAIN             = "Fotoshare - Admin";
-    //Path
-    const UPLOAD_PATH            = "./img/user/";
-    const ZIP_FILENAME           = "download.zip";
 
     public $data;
     public $admin_methods;
@@ -23,12 +17,13 @@ class Uploader extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->data['title'] = self::TITLE_MAIN;
+        $this->data['title'] = TITLE_ADMINISTRATION;
         $this->admin_methods = array(
             "index",
             "upload"
         );
         $this->load->model('settings_model');
+        $this->load->library('download_zip');
         $this->page_settings = $this->settings_model->get_page_settings();
     }
 
@@ -70,7 +65,7 @@ class Uploader extends CI_Controller
                     $this->data['album'] = $this->foto->get_album($this->authentication->get_user_id(),
                         $this->uri->segment(4));
                     $this->data['album_xeditable'] = $this->_prep_album_xeditable($this->data['album'][0]);
-                    $this->data['zip_exists'] = $this->_zip_exists($this->data['id_album']) ? true : false;
+                    $this->data['zip_exists'] = $this->download_zip->zip_exists($this->data['id_album']) ? true : false;
                     $this->load->view(self::UPLOADER_VIEW, $this->data);
                 }
             }
@@ -83,7 +78,7 @@ class Uploader extends CI_Controller
      */
     public function _upload_picture()
     {
-        $config['upload_path']   = self::UPLOAD_PATH . $this->authentication->get_user_login() . '/' . $this->uri->segment(4);
+        $config['upload_path']   = UPLOAD_PATH . $this->authentication->get_user_login() . '/' . $this->uri->segment(4);
         $config['allowed_types'] = 'gif|jpg|png';
         $config['encrypt_name']  = TRUE;
 
@@ -294,8 +289,7 @@ class Uploader extends CI_Controller
     }
 
     /**
-     * 
-     * @param int $id_album
+     *
      */
     public function change_text_dz()
     {
@@ -387,121 +381,7 @@ class Uploader extends CI_Controller
         }
     }
 
-    /**
-     * Provides data for data for datatables
-     * 
-     * @todo needs refactoring - lot of sqls in controller, very big method
-     */
-    public function album_data()
-    {
-        $input  = $this->input->get();
-        
-        $aColumns = array('name', 'date', 'place', 'hits', 'cnt', 'id');
 
-        // Indexed column (used for fast and accurate table cardinality)
-        $sIndexColumn = 'id';
-
-        // DB table to use
-        $sTable = 'datatables';
-
-        // limit for table
-        $sLimit = "";
-        if (isset($input['start']) && $input['length'] != '-1') {
-            $sLimit = " LIMIT " . intval($input['start']) . ", " . intval($input['length']);
-        }
-
-        //ordering
-        $aOrderingRules = array();
-        if (isset($input['order'])) {
-                    $aOrderingRules[] = "`" . $aColumns[intval($input['order'][0]['column'])] . "` "
-                            . $input['order'][0]['dir'];
-        }
-
-        if (!empty($aOrderingRules)) {
-            $sOrder = " ORDER BY " . implode(", ", $aOrderingRules);
-        } else {
-            $sOrder = "";
-        }
-
-        $iColumnCount = count($aColumns);
-
-        // search
-        if (isset($input['search']) && $input['search'] != "") {
-            $aFilteringRules = array();
-            for ($i = 0; $i < $iColumnCount; $i++) {
-                    $aFilteringRules[] = "`" . $aColumns[$i] . "` LIKE '%" . $input['search']['value'] . "%'";
-            }
-            if (!empty($aFilteringRules)) {
-                $aFilteringRules = array('(' . implode(" OR ", $aFilteringRules) . ')');
-            }
-        }
-        
-        // user filtering by user
-        if (!empty($aFilteringRules)) {
-            $sWhere = " WHERE " . implode(" AND ", $aFilteringRules) . "AND id_user=".$this->authentication->get_user_id();
-        } else {
-            $sWhere = "";
-        }
-
-        $aQueryColumns = array();
-        foreach ($aColumns as $col) {
-            if ($col != ' ') {
-                $aQueryColumns[] = $col;
-            }
-        }
-
-        $sQuery = "
-                    SELECT SQL_CALC_FOUND_ROWS `" . implode("`, `", $aQueryColumns) . "`
-                    FROM `" . $sTable . "`" . $sWhere . $sOrder . $sLimit;
-
-        $rResult = $this->db->query($sQuery) or die($this->db->error);
-
-        // Data set length after filtering
-        $sQuery             = "SELECT FOUND_ROWS()";
-        $rResultFilterTotal = $this->db->query($sQuery) or die($this->db->error);
-        list($iFilteredTotal) = $rResultFilterTotal->result_array();
-
-        // Total data set length
-        $sQuery       = "SELECT COUNT(`" . $sIndexColumn . "`) as cnt FROM `" . $sTable . "`";
-        $rResultTotal = $this->db->query($sQuery) or die($this->db->error);
-        list($iTotal) = $rResultTotal->result_array();
-
-
-        /**
-         * Output
-         */
-        $output = array(
-            "sEcho"                => intval(@$input['sEcho']),
-            "iTotalRecords"        => $iTotal['cnt'],
-            "iTotalDisplayRecords" => $iFilteredTotal['FOUND_ROWS()'],
-            "aaData"               => array(),
-        );
-        foreach ($rResult->result_array() as $aRow){
-            $row = array();
-            for ($i = 0; $i < $iColumnCount; $i++) {
-                if($aColumns[$i] == 'id'){
-                    $row[] = $this->generate_datalink($aRow[$aColumns[$i]]);
-                }else if($aColumns[$i] == 'date'){
-                    $row[] =  date('d.m.Y',strtotime(@$aRow[$aColumns[$i]]));
-                }else{
-                    $row[] = @$aRow[$aColumns[$i]];
-                }
-            }
-            $output['aaData'][] = $row;
-        }
-
-        echo json_encode($output);
-    }
-
-    /**
-     * Returns button html
-     * @return string view for button
-     */
-    public function generate_datalink($id)
-    {
-        $this->data['id_album'] = $id;
-        return $this->load->view(self::DATATABLES_BUTTON_VIEW, $this->data, true);
-    }
 
     /**
      * Create zip for album
@@ -511,38 +391,10 @@ class Uploader extends CI_Controller
     public function generate_zip($sQuality = '', $sId = null)
     {
         $this->authentication->is_owner($sId);
-        $sPath = $this->_get_photo_path($sId);
-        if ($this->_zip_exists($sId)) {
-            $aResponse = array('success' => '0', 'error' => 'file already exists');
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($aResponse));
-            $this->output->_display();
-            die();
-        }
-        $this->load->library('zip');
-        $this->zip->compression_level = 0;
-        $sAffix = '';
-        if ('hq' !== strtolower($sQuality)) {
-            $sAffix = "_wm";
-        }
-        if ($sId !== null) {
-            $oPhotos = $this->foto->get_album_content($sId);
-            foreach ($oPhotos as $aSinglePhoto) {
-
-                $sPhotoPath = $sPath . $aSinglePhoto->name . $sAffix . $aSinglePhoto->extension;
-                $this->zip->read_file($sPhotoPath);
-            }
-            if ($this->zip->archive($sPath . self::ZIP_FILENAME)) {
-                $aResponse = array('success' => '1');
-            } else {
-                $aResponse = array('success' => '0', 'error' => 'error while archiving');
-            }
-            $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode($aResponse));
-        }
-
+        $aResponse = $this->download_zip->generate_zip($sQuality,$sId);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($aResponse));
     }
 
     /**
@@ -552,34 +404,10 @@ class Uploader extends CI_Controller
     public function delete_zip($sId = null)
     {
         $this->authentication->is_owner($sId);
-        if ($this->_zip_exists($sId) && unlink($this->_get_photo_path($sId).self::ZIP_FILENAME)) {
-            $aResponse = array('success' => '1');
-        }else{
-            $aResponse = array('success' => '0','error'=>'file does not exists');
-        }
+        $aResponse = $this->download_zip->delete_zip($sId);
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($aResponse));
-    }
-
-    /**
-     * Check if zip exists for certain album
-     * @param string $sId
-     * @return bool
-     */
-    public function _zip_exists($sId){
-        return file_exists($this->_get_photo_path($sId).self::ZIP_FILENAME);
-    }
-
-    /**
-     * Return path to photos
-     * @param string $sId
-     * @return string
-     */
-    public function _get_photo_path($sId){
-        $this->authentication->is_owner($sId);
-        $sLogin = $this->authentication->get_user_login();
-        return self::UPLOAD_PATH . $sLogin . '/' . $sId . '/';
     }
 
 }
