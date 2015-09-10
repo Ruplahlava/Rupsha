@@ -106,7 +106,7 @@ $(function () {
     });
 //datatables
 
-    var url = $(location).attr('href').replace('/uploader/upload', '/uploader/album_data');
+    var url = $(location).attr('href').replace('/uploader/upload', '/datatables/album_data');
     $('#album_overview').DataTable({
         "order": [[ 5, "desc" ]],
         serverSide: true,

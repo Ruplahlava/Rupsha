@@ -6,7 +6,6 @@ class Uploader extends CI_Controller
     const UPLOADER_VIEW          = 'admin/uploader';
     const ALBUM_ADD_VIEW         = 'admin/album_add';
     const MAIN_VIEW              = 'admin/main';
-    const DATATABLES_BUTTON_VIEW = 'admin/datatables_button';
 
     public $data;
     public $admin_methods;
@@ -290,8 +289,7 @@ class Uploader extends CI_Controller
     }
 
     /**
-     * 
-     * @param int $id_album
+     *
      */
     public function change_text_dz()
     {
@@ -383,121 +381,7 @@ class Uploader extends CI_Controller
         }
     }
 
-    /**
-     * Provides data for data for datatables
-     * 
-     * @todo needs refactoring - lot of sqls in controller, very big method
-     */
-    public function album_data()
-    {
-        $input  = $this->input->get();
-        
-        $aColumns = array('name', 'date', 'place', 'hits', 'cnt', 'id');
 
-        // Indexed column (used for fast and accurate table cardinality)
-        $sIndexColumn = 'id';
-
-        // DB table to use
-        $sTable = 'datatables';
-
-        // limit for table
-        $sLimit = "";
-        if (isset($input['start']) && $input['length'] != '-1') {
-            $sLimit = " LIMIT " . intval($input['start']) . ", " . intval($input['length']);
-        }
-
-        //ordering
-        $aOrderingRules = array();
-        if (isset($input['order'])) {
-                    $aOrderingRules[] = "`" . $aColumns[intval($input['order'][0]['column'])] . "` "
-                            . $input['order'][0]['dir'];
-        }
-
-        if (!empty($aOrderingRules)) {
-            $sOrder = " ORDER BY " . implode(", ", $aOrderingRules);
-        } else {
-            $sOrder = "";
-        }
-
-        $iColumnCount = count($aColumns);
-
-        // search
-        if (isset($input['search']) && $input['search'] != "") {
-            $aFilteringRules = array();
-            for ($i = 0; $i < $iColumnCount; $i++) {
-                    $aFilteringRules[] = "`" . $aColumns[$i] . "` LIKE '%" . $input['search']['value'] . "%'";
-            }
-            if (!empty($aFilteringRules)) {
-                $aFilteringRules = array('(' . implode(" OR ", $aFilteringRules) . ')');
-            }
-        }
-        
-        // user filtering by user
-        if (!empty($aFilteringRules)) {
-            $sWhere = " WHERE " . implode(" AND ", $aFilteringRules) . "AND id_user=".$this->authentication->get_user_id();
-        } else {
-            $sWhere = "";
-        }
-
-        $aQueryColumns = array();
-        foreach ($aColumns as $col) {
-            if ($col != ' ') {
-                $aQueryColumns[] = $col;
-            }
-        }
-
-        $sQuery = "
-                    SELECT SQL_CALC_FOUND_ROWS `" . implode("`, `", $aQueryColumns) . "`
-                    FROM `" . $sTable . "`" . $sWhere . $sOrder . $sLimit;
-
-        $rResult = $this->db->query($sQuery) or die($this->db->error);
-
-        // Data set length after filtering
-        $sQuery             = "SELECT FOUND_ROWS()";
-        $rResultFilterTotal = $this->db->query($sQuery) or die($this->db->error);
-        list($iFilteredTotal) = $rResultFilterTotal->result_array();
-
-        // Total data set length
-        $sQuery       = "SELECT COUNT(`" . $sIndexColumn . "`) as cnt FROM `" . $sTable . "`";
-        $rResultTotal = $this->db->query($sQuery) or die($this->db->error);
-        list($iTotal) = $rResultTotal->result_array();
-
-
-        /**
-         * Output
-         */
-        $output = array(
-            "sEcho"                => intval(@$input['sEcho']),
-            "iTotalRecords"        => $iTotal['cnt'],
-            "iTotalDisplayRecords" => $iFilteredTotal['FOUND_ROWS()'],
-            "aaData"               => array(),
-        );
-        foreach ($rResult->result_array() as $aRow){
-            $row = array();
-            for ($i = 0; $i < $iColumnCount; $i++) {
-                if($aColumns[$i] == 'id'){
-                    $row[] = $this->generate_datalink($aRow[$aColumns[$i]]);
-                }else if($aColumns[$i] == 'date'){
-                    $row[] =  date('d.m.Y',strtotime(@$aRow[$aColumns[$i]]));
-                }else{
-                    $row[] = @$aRow[$aColumns[$i]];
-                }
-            }
-            $output['aaData'][] = $row;
-        }
-
-        echo json_encode($output);
-    }
-
-    /**
-     * Returns button html
-     * @return string view for button
-     */
-    public function generate_datalink($id)
-    {
-        $this->data['id_album'] = $id;
-        return $this->load->view(self::DATATABLES_BUTTON_VIEW, $this->data, true);
-    }
 
     /**
      * Create zip for album
