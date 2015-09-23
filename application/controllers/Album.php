@@ -77,7 +77,7 @@ class Album extends CI_Controller
         $this->data['album'] = $album;
         $this->data['title'] = $album[0]->name . ' - '.TITLE_WEBPAGE;
         $this->data['user']  = $aUser;
-        $this->data['zip_download'] = $this->download_zip->zip_exists($album[0]->id_user,$aUser[0]->login);
+        $this->data['zip_download'] = $this->download_zip->zip_exists($album[0]->id,$aUser[0]->login);
         if($this->input->post('album_password')){
             $this->authentication->set_stored_password($this->input->post('album_password'));
         }
