@@ -29,5 +29,5 @@
                                         <script>window.jQuery || document.write('<script src="<?= base_url() ?>js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
                                         <link href="<?= base_url() ?>css/nanogallery.css" rel="stylesheet" type="text/css">
                                             <link href="<?= base_url() ?>css/themes/light/nanogallery_light.css" rel="stylesheet" type="text/css">
-                                                <script type="text/javascript" src="<?= base_url() ?>js/jquery.nanogallery.min.js"></script>
+                                                <script type="text/javascript" src="<?= base_url() ?>js/jquery.nanogallery.js"></script>
                                                 </head>

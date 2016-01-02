@@ -110,6 +110,7 @@ nanoGALLERY v5.2.3 release notes.
       fnViewerInfo : null,
       fnImgToolbarCustInit : null,
       fnImgToolbarCustDisplay : null,
+      fnImgToolbarCustClose : null,
       fnImgToolbarCustClick : null,
       fnProcessData : null,
       touchAnimation : true,
@@ -7045,6 +7046,7 @@ this.thumbImgHeight = 0;           // thumbnail image height
         }
         ThumbnailHoverOutAll();
       }
+      gO.fnImgToolbarCustClose();
       g_timeImgChanged=new Date().getTime();
       g_containerViewerDisplayed=false;
     }

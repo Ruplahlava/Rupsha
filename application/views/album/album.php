@@ -1,6 +1,14 @@
 <?php $this->load->view('album/htmlheader'); ?>
 <?php $this->load->view('album/header'); ?>
-
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.5&appId=157562951113623";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+    <div class="fb-like" data-layout="button" data-action="like" data-show-faces="false" data-share="false"></div>
     <div id="nanoAlbum">
 
     </div>
